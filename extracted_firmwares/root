@@ -1,0 +1,3 @@
+* * * * * /etc/torch/check_running
+* * * * * /etc/torch/device_add_unmonit
+0 2 * * * /etc/torch/update_firmware

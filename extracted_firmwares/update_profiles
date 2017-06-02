@@ -1,0 +1,270 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+. /usr/share/libubox/jshn.sh
+
+CFGDOMAINS="/etc/config/torchdomains"
+UPDATEFILE="/etc/config/torchupdates"
+PROFILESDIR="/etc/squid/profiles"
+BLACKLISTDIR="/etc/squid/blacklist"
+CFGBEDTIME="/etc/squid/profiles/bedtime.acl"
+MACNOPROFILE="/etc/squid/mac-noprofile.acl"
+MACADULT="/etc/squid/mac-adult"
+LOGFILE="/tmp/torchapi.log"
+TORCHDOMAIN=$(grep "torchdomain" $CFGDOMAINS | cut -d= -f2)
+TORCHAPI=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+APIROUTE=$(grep "api_profiles" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+TIMESTAMP="date +%s"
+SQUID="/etc/init.d/squid"
+TORCHSTATS="/etc/init.d/torchstats"
+REQFILE="/tmp/profiles.req"
+
+#URLBED="http://192.168.10.1/bed?dst=%H"
+#URLBLOCK="http://192.168.10.1/block?dst=%H"
+
+URLBED="$TORCHDOMAIN/bedtime"
+URLBLOCK="$TORCHDOMAIN/blocked"
+
+TMPPROFILESFILE="/tmp/prof"
+
+isRestart="0"
+# check if get any arguments
+if [ $# -ge 1 ]; then
+    echo [`$TIMESTAMP`] "Forced update profiles request" >> $LOGFILE
+    isRestart="1"
+fi
+
+check_if_profile_changed(){
+	profId=$1
+	profTC=$2
+
+	[ -z "$profId" ] || [ -z "$profTC" ] && {
+		return 1 
+	}
+
+    # convert date format 2016-09-25T17:04:28.849Z to timestamp
+    dTC=$(echo $profTC | cut -dT -f1)
+    tTC=$(echo $profTC | cut -dT -f2 | cut -d. -f1)
+	nowTC=$(date +%s --date "$dTC $tTC")
+    
+    # file not found, create
+    [ ! -f $TMPPROFILESFILE ] && {
+		echo "$profId=$nowTC" > $TMPPROFILESFILE
+		return 1
+	}
+
+	info=$(grep -r "$profId" $TMPPROFILESFILE)
+
+    # not found profile record
+	[ -z "$info" ] && {
+	  echo "$profId=$nowTC" >> $TMPPROFILESFILE 
+      return 1
+    }
+
+	oldTC=$(echo $info | cut -d= -f2)
+
+    # received time great, neew profile update
+	if [ $nowTC -gt $oldTC ]; then
+		sed -i "s/$profId=.*/$profId=$nowTC/g" $TMPPROFILESFILE
+		return 1
+	fi
+
+	return 0
+}
+
+check_profile_status(){
+ json_init
+ json_load "$1"
+ json_get_var status status
+ retval=0
+ if [ "$status" == "ok" ]; then
+     json_select data
+     local index_profiles=1
+     while json_get_type _id $index_profiles; do
+      json_select $index_profiles
+      json_get_var nameId _id
+      json_get_var name name
+
+      # get changed status
+      json_select auditing
+      json_get_var lastUpdateAt lastUpdateAt
+
+	  json_select ..
+
+      check_if_profile_changed "$nameId" "$lastUpdateAt"
+      if [ $? != 0 ]; then
+		retval=1
+		#break
+	  fi	
+
+	  json_select ..
+      index_profiles=$((index_profiles+1))
+     done
+     json_cleanup
+
+	return $retval
+ fi # if [ "$status" == "ok" ]; 
+
+ return 0
+}
+
+# do custom blacklist update before
+#/etc/torch/update_blacklist_devices
+
+echo [`$TIMESTAMP`" --->] Request All Profiles update ..." >> $LOGFILE
+
+REP=$(curl -s -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    $TORCHAPI$APIROUTE)
+
+#echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+# replace 'null' by 'none', jshn bug
+REP=$(echo "$REP" | sed 's/null/""/g' )
+
+
+
+check_profile_status "$REP"
+if [ $? == 0 ] && [ "$isRestart" == "0" ]; then
+   # no need restarting
+   exit 0
+fi
+
+echo -e [`$TIMESTAMP`"] PROFILES !!!NEED RESTART SQUID!!!" >> $LOGFILE
+
+echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+json_init
+json_load "$REP"
+json_get_var status status
+
+if [ "$status" == "ok" ]; then
+    # stop squid at first
+    $SQUID stop 2>/dev/null
+
+    # round LEDS
+    /etc/init.d/pwm start round
+    
+    # restart new bedtime config
+    # if [ -f $CFGBEDTIME ]; then
+    # rm $CFGBEDTIME
+    # fi
+    # delete all and restart new profiles
+    rm -rf $PROFILESDIR/*  2>/dev/null
+    # delete adult profiles
+    rm -rf $MACADULT  2>/dev/null
+    # or create directory if dont exist
+    mkdir -p $PROFILESDIR  2>/dev/null
+    json_select data
+    local index_profiles=1
+    while json_get_type _id $index_profiles; do
+	json_select $index_profiles
+	json_get_var nameId _id
+	json_get_var name name
+	json_get_var isAdult isAdult
+
+	echo "got user : $name" >> $LOGFILE
+
+	json_select devices
+	local index_devices=1
+	# save all mac in /etc/squid/profiles/name-mac
+	    while json_get_type _id $index_devices; do
+		json_select $index_devices
+		json_select technical
+		json_get_var macAddress macAddress
+		json_get_var ipAddress ipAddress
+		echo "got mac/ip : $macAddress/$ipAddress" >> $LOGFILE
+		case "$ipAddress" in
+			*"192.168.10."*) echo $macAddress >> $PROFILESDIR/$nameId-mac
+		esac
+		json_select ..
+
+    	if [ "$isAdult" == "1" ]; then
+		  echo "$macAddress/$ipAddress" >> $MACADULT
+	    fi
+
+		index_devices=$((index_devices+1))
+		json_select ..
+	    done
+	json_select ..
+	# if mac list for profile exist, then create bedtime acl
+	if [ -f "$PROFILESDIR/$nameId-mac" ]; then
+	    echo "acl $nameId-mac arp \"/etc/squid/profiles/$nameId-mac\"" >> $CFGBEDTIME
+
+	    # check custom blacklist
+	    #if [  -f "$BLACKLISTDIR/$nameId-blacklist" ]; then
+	    #	echo "acl $nameId-blacklist dstdomain \"$BLACKLISTDIR/$nameId-blacklist\"" >> $CFGBEDTIME
+	    #	echo "deny_info $URLBLOCK $nameId-blacklist" >> $CFGBEDTIME
+	    #	echo "http_access deny $nameId-mac $nameId-blacklist" >> $CFGBEDTIME
+	    #fi
+
+	    if [ "$isAdult" == "0" ]; then
+	    # get bed and wake time
+		json_select bedTime
+		json_get_var bedMinute minute
+		if [ -z "$bedMinute" ]; then
+		    bedMinute="0"
+		fi
+		json_get_var bedHour hour
+		if [ -z "$bedHour" ]; then
+		    bedHour="0"
+		fi
+		json_select ..
+		json_select wakeTime
+		json_get_var wakeMinute minute
+		if [ -z "$wakeMinute" ]; then
+		    wakeMinute="0"
+		fi
+		json_get_var wakeHour hour
+		if [ -z "$wakeHour" ]; then
+		    wakeHour="0"
+		fi
+		json_select ..
+	    # fix 00:00 format
+		if [ $bedMinute -le 9 ] ; then
+		    bedMinute="0$bedMinute"
+		fi
+		if [ $wakeMinute -le 9 ] ; then
+		    wakeMinute="0$wakeMinute"
+		fi
+		echo "name : $name _id : $nameId " >> $LOGFILE
+		echo "bedTime : $bedHour:$bedMinute" >> $LOGFILE
+		echo "wakeTime : $wakeHour:$wakeMinute" >> $LOGFILE
+
+		# add acl in Squid
+		# squid reverse time range bug
+		if [[ "$wakeHour" -gt "$bedHour" ]] || [[ "$wakeHour" -eq "$bedHour" && "$wakeMinute" -gt "$bedMinute" ]] ; then
+		    echo "acl $nameId-bed1 time $wakeHour:$wakeMinute-24:00" >> $CFGBEDTIME
+		    echo "acl $nameId-bed2 time 00:00-$bedHour:$bedMinute" >> $CFGBEDTIME
+		    echo "http_access allow $nameId-mac $nameId-bed1" >> $CFGBEDTIME
+		    echo "http_access allow $nameId-mac $nameId-bed2" >> $CFGBEDTIME
+		else
+		    echo "acl $nameId-bed time $wakeHour:$wakeMinute-$bedHour:$bedMinute" >> $CFGBEDTIME
+		    echo "http_access allow $nameId-mac $nameId-bed" >> $CFGBEDTIME
+		fi
+		echo "http_access deny $nameId-mac" >> $CFGBEDTIME
+		echo "deny_info $URLBED $nameId-mac" >> $CFGBEDTIME
+	    else
+	    	echo "got Adult devices !" >> $LOGFILE
+	    	echo "http_access allow $nameId-mac" >> $CFGBEDTIME
+	    fi
+	fi
+        json_select ..
+	index_profiles=$((index_profiles+1))
+    done
+    json_cleanup
+
+    # also update paused profiles and custom blacklist url
+    /etc/torch/update_blocking
+
+    # update devices mac, noprofile file and restart squid
+    /etc/torch/update_devices "forced"   
+
+    echo "{\"status\":\"ok\"}"
+    # restart squid to get new profiles
+    #/etc/init.d/squid restart
+    $SQUID start 1> /dev/null
+    $TORCHSTATS restart
+    exit 1
+fi
+echo "{\"status\":\"Error with update_profiles\"}"
+

@@ -1,0 +1,53 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2015 Torch Project
+
+START=1
+STOP=10
+
+USE_PROCD=1
+
+PROG="/sbin/pwm_led.sh"
+
+EXTRA_COMMANDS="on off round"
+EXTRA_HELP=<<EOF
+        on ON
+        off OFF
+	round ROUND
+EOF
+
+pwm_start() {
+    echo "CMD $1 $2"
+    # start camdiag
+    procd_open_instance
+    procd_set_param command "$PROG"
+    procd_append_param command "$1"
+    procd_append_param command "$2"	
+    procd_set_param respawn
+    procd_close_instance
+}
+
+on(){
+   start_service "on"
+}
+
+off(){
+   start_service "off"
+}
+
+round(){
+   start_service "round"
+}
+
+start_service(){
+  pwm_start "$1" "$2"   
+}
+
+#service_triggers()
+#{
+#        procd_add_reload_trigger "pwm_led.sh"
+#}
+
+stop(){
+        service_stop $PROG
+}
+

@@ -1,0 +1,17 @@
+torchdomain=http://home.mytorch.com
+torchapi=http://api.mytorch.com
+my_torch=http://home.mytorch.com
+torchos=http://192.168.10.1
+firstsetup=/router/setup
+devicesetup=/device
+api_devices_all=/api/v1/devices
+api_devices_add=/api/v1/devices
+api_devices_blacklist=/api/v1/devices/blacklist
+api_traffic=/api/v1/devices/traffic
+api_config_all=/api/v1/router
+api_blacklist_all=/api/v1/blacklist
+api_profiles=/api/v1/profiles
+api_blocking=/api/v1/devices/blocking
+api_firmware=/api/v1/router/firmware
+dns='52.45.212.122 52.45.225.194'
+log_email="weknodeit@gmail.com"

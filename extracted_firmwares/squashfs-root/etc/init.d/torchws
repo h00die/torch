@@ -1,0 +1,20 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2015 Torch Project
+
+START=60
+STOP=60
+
+SERVICE_USE_PID=1
+
+# TODO include cfg domains
+#CFGDOMAINS="/etc/config/torchdomains"
+
+start() {
+    # we need the torchdomains file as first argument
+    /bin/torchws #$CFGDOMAINS
+}
+
+stop() {
+    kill `cat /tmp/torchws.pid`
+    echo "Torch WebSockets killed ..."
+}

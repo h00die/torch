@@ -1,0 +1,9 @@
+Package: libwebsockets
+Version: 2014-03-01-388dc7d201d8d123841869fb49ec4d94d6dd7f54
+Depends: libc, zlib, libopenssl
+Source: package/libwesockets
+Section: libs
+Architecture: ar71xx
+Installed-Size: 29677
+Description:  libwebsockets
+ This package contains libwebsocket libraries

@@ -1,0 +1,313 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2015 Torch Project
+
+START=99
+STOP=80
+
+SERVICE_USE_PID=1
+
+EXTRA_COMMANDS="offline"
+
+CFGFILE="/etc/squid/squid.conf"
+CFGDEFAULT="/etc/squid/default.conf"
+CFGGARDEN="/etc/squid/gardenwall.conf"
+CFGBEDTIME="/etc/squid/profiles/bedtime.acl"
+MACNOPROFILE="/etc/squid/mac-noprofile.acl"
+MACADULT="/etc/squid/mac-adult"
+BINDREDIR="/etc/squid/redirbindip"
+CFGSETUP="/etc/squid/firstsetup.conf"
+CFGBLOCKALL="/etc/squid/block-all.conf"
+CFGDOMAINS="/etc/config/torchdomains"
+CFGUPDATES="/etc/config/torchupdates"
+PROFILESDIR="/etc/squid/profiles"
+BLOCKINGDIR="/etc/squid/block"
+FOREVERDIR="/etc/squid/blockforever"
+BLACKLISTDIR="/etc/squid/blacklist/"
+URLREWRITE="/bin/torchblock-client"
+CACHEDIR="/tmp/cache/"
+CACHESWAP=false
+SSLDBDIR="/var/lib/ssl_db"
+SSLCADIR="/etc/squid/ssl_cert"
+SSLPEMNAME="Torch-CA.pem"
+SSLDERNAME="Torch-CA.der"
+SSLSUBJ="/C=US/O=Torch/CN=www.mytorch.com"
+SSLWWWDIR="/www/torch/ssl/"
+WHITELIST="/etc/squid/whitelist"
+
+TORCHDOMAIN=$(grep "torchdomain" $CFGDOMAINS | cut -d= -f2 | cut -d'/' -f3)
+TORCHAPI=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2 | cut -d'/' -f3)
+MYTORCHDOMAIN=$(grep "my_torch" $CFGDOMAINS | cut -d= -f2 | cut -d'/' -f3)
+TORCHOS=$(grep "torchos" $CFGDOMAINS | cut -d= -f2 | cut -d'/' -f3)
+TORCHSETUP=$(grep "firstsetup" $CFGDOMAINS | cut -d= -f2)
+TORCHDEVICE=$(grep "devicesetup" $CFGDOMAINS | cut -d= -f2)
+LASTCONFIG=$(grep "config" $CFGUPDATES | cut -d= -f2 )
+
+IFMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+if [ -z "$IFMAC" ]; then
+	# read wan_mac
+	IFMAC=$(fw_printenv | grep 'ethaddr=' | cut -d= -f2 | awk -F"\"" '{print $2}')
+fi
+#IFMAC=$(ifconfig eth0 | awk '/HWaddr/ { print $5 }')
+
+#URLPAUSE="http://192.168.10.1/pause?dst=%H"
+URLPAUSE="http://$TORCHDOMAIN/pause"
+
+#URLBLOCK="http://192.168.10.1/block?dst=%H"
+URLBLOCK="http://$TORCHDOMAIN/blocked"
+
+URLOFFLINE="http://192.168.10.1/offline"
+#URLNOPROFILE="http://192.168.10.1/noprofile?dst=%H"
+URLNOPROFILE="http://$TORCHDOMAIN/newdevice"
+
+URLADDDEVICE="http://192.168.10.1/device?dst=%H"
+
+#POLICY_SERVER="nsintercept.api-digital.com"
+#POLICY_SERVER="nsintercept.mytorch.com"
+#POLICY_SERVER="dev.api.mytorch.com"
+POLICY_SERVER=$TORCHAPI
+
+start() {
+    if [[ $(pgrep -x /usr/sbin/squid) ]]
+    then
+	#echo "Squid already launched"
+	exit 1
+    fi
+
+    #echo "Squid launched ..."
+    config_squid
+    config_setacl
+
+    if [ "$LASTCONFIG" == 0 ]
+    then
+	config_firstsetup
+	else
+	config_gardenwall
+    fi
+
+    if $CACHESWAP;
+    then
+		/usr/sbin/squid -z &
+		sleep 5
+    fi
+
+    /usr/sbin/squid
+}
+
+stop() {
+    # if [ "$(pidof squid)" ]; then
+    # 	echo `pidof squid` | tr ' ' '\n' | while read pid; do
+    # 	    kill -9 $pid
+    # 	done
+    # fi
+    /usr/sbin/squid -k kill
+    
+	# kill redir instance
+    for pid in $(pidof redir); do
+        kill -9 $pid
+    done
+}
+
+restart() {
+    stop
+    start
+    #/usr/sbin/squid -k reconfigure
+}
+
+
+offline() {
+    stop
+    config_squid
+
+    echo "deny_info $URLOFFLINE localnet" >> $CFGFILE
+    echo "http_access deny localnet" >> $CFGFILE
+    echo "http_access deny all" >> $CFGFILE
+    cat $CFGGARDEN >> $CFGFILE
+
+    /usr/sbin/squid
+}
+
+config_squid() {
+    uci show firewall | grep Squid -q
+    if [  $? != 0 ]; then
+	# force firewall
+	local localip=$(ifconfig br-lan | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+	uci delete firewall redirect
+	uci add firewall redirect
+	uci set firewall.@redirect[0].name='Squid Proxy'
+	uci set firewall.@redirect[0].src=lan
+	uci set firewall.@redirect[0].proto=tcp
+	uci set firewall.@redirect[0].dest_port=3128
+	uci set firewall.@redirect[0].src_dport=80
+	uci set firewall.@redirect[0].src_dip="!$localip"
+	uci set firewall.@redirect[0].dest_ip=$localip
+	uci set firewall.@redirect[0].target='DNAT'
+	uci commit firewall
+
+    # making firewall rules, must move !
+    #iptables -t nat -A PREROUTING -p tcp -i br-lan --dport 80 -j REDIRECT --to-port 3128
+
+	/etc/init.d/firewall restart
+
+    fi
+
+    # TODO : get localnet
+    echo "acl localnet src 192.168.10.0/24" > $CFGFILE
+    echo "acl ssl_ports port 443" >> $CFGFILE
+    echo "acl safe_ports port 80" >> $CFGFILE
+    echo "acl safe_ports port 443" >> $CFGFILE
+    echo "acl safe_ports port 70" >> $CFGFILE
+    echo "acl safe_ports port 210" >> $CFGFILE
+    echo "acl safe_ports port 1025-65535" >> $CFGFILE
+    echo "acl safe_ports port 280" >> $CFGFILE
+    echo "acl safe_ports port 488" >> $CFGFILE
+    echo "acl safe_ports port 591" >> $CFGFILE
+    echo "acl safe_ports port 777" >> $CFGFILE
+    echo "acl CONNECT method CONNECT" >> $CFGFILE
+
+    # check log/cache directoy
+    if [ ! -e $CACHEDIR ]
+    then
+	mkdir $CACHEDIR
+	chown nobody:nogroup $CACHEDIR
+	# set flag to init squid swap directory after creating conf file
+	CACHESWAP=true
+    fi
+
+    # check ssl_db directory
+    if [ ! -e $SSLDBDIR ]
+    then
+		/usr/lib/squid/ssl_crtd -c -s $SSLDBDIR
+		chown -R nobody $SSLDBDIR
+    fi
+
+    # check ssl certif directory
+    if [ ! -e $SSLCADIR/$SSLPEMNAME ]
+    then
+	mkdir $SSLCADIR
+	mkdir $SSLWWWDIR
+	chown nobody:nogroup $SSLCADIR
+	chmod 700 $SSLCADIR
+	openssl req -new -newkey rsa:2048 -sha256 -days 3650 -nodes -x509 -subj $SSLSUBJ -keyout $SSLCADIR/$SSLPEMNAME -out $SSLCADIR/$SSLPEMNAME
+	# openssl x509 -in $SSLCADIR/$SSLPEMNAME -outform DER -out $SSLWWWDIR/$SSLDERNAME
+    fi
+}
+
+config_setacl() {
+    # skype https issue
+    echo "acl numeric_IPs dstdom_regex ^(([ 0-9]+\.[ 0-9]+\.[ 0-9]+\.[ 0-9]+)|(\[([ 0-9af]+)?:([ 0-9af:]+)?:([ 0-9af]+)?\])):443" >> $CFGFILE
+    echo "acl Skype_UA browser ^skype" >> $CFGFILE
+    echo "http_access allow CONNECT localnet numeric_IPS Skype_UA" >> $CFGFILE
+
+    # Mac Header Injection
+    echo "acl torch dstdomain $TORCHDOMAIN" >> $CFGFILE
+    echo "acl torchapi dstdomain $TORCHAPI" >> $CFGFILE
+    echo "acl torchos dstdomain $TORCHOS" >> $CFGFILE
+    echo "acl mytorch dstdomain $MYTORCHDOMAIN" >> $CFGFILE
+	echo "acl ssl proto HTTPS" >> $CFGFILE
+    echo "request_header_add x-router-mac $IFMAC torch" >> $CFGFILE
+    echo 'request_header_add x-device-mac "%>eui" torch' >> $CFGFILE
+    echo "http_access allow localhost" >> $CFGFILE
+    echo "http_access allow localnet torch" >> $CFGFILE
+    echo "http_access allow localnet torchapi" >> $CFGFILE
+    echo "http_access allow localnet torchos" >> $CFGFILE
+    echo "http_access allow localnet mytorch" >> $CFGFILE
+
+    #cat $CFGDEFAULT >> $CFGFILE
+    # TODO : add dynamicly ssl
+}
+
+config_firstsetup() {
+    echo "acl setup dstdomain $TORCHDOMAIN" >> $CFGFILE
+    echo "deny_info http://$TORCHDOMAIN$TORCHSETUP localnet" >> $CFGFILE
+    echo "http_access deny localnet" >> $CFGFILE
+
+    cat $CFGSETUP >> $CFGFILE
+}
+
+config_gardenwall() {
+    # check blocking FOREVER first
+#    if [ "$(ls -A $FOREVERDIR)" ]; then
+#	ls $FOREVERDIR | while read id; do
+#    	    echo "acl $id-block arp \"$FOREVERDIR/$id\" " >> $CFGFILE
+#    	    echo "deny_info $URLPAUSE $id-block" >> $CFGFILE
+#    	    echo "http_access deny $id-block" >> $CFGFILE
+#	done
+#    fi
+
+    # do the same for time paused
+#    if [ "$(ls -A $BLOCKINGDIR)" ]; then
+#	ls $BLOCKINGDIR | while read id; do
+#    	    echo "acl $id-block arp \"$BLOCKINGDIR/$id\" " >> $CFGFILE
+#    	    echo "deny_info $URLPAUSE $id-block" >> $CFGFILE
+#    	    echo "http_access deny $id-block" >> $CFGFILE
+#	done
+#    fi
+
+    # check blocking
+    # if [ -f $BLOCKINGFILE ]; then
+    # 	echo "acl blocking-mac arp \"$BLOCKINGFILE\"" >> $CFGFILE
+    # 	echo "deny_info $URLPAUSE blocking-mac" >> $CFGFILE
+    # 	echo "http_access deny blocking-mac" >> $CFGFILE
+    # fi
+
+
+    # check custom blacklist  --> in update_profiles
+    # if [ "$(ls -A $BLACKLISTGDIR)" ]; then
+    # 	ls $BLACKLISTDIR | while read id; do
+    # 	echo "acl $id-blacklist dstdomain \"$BLACKLISTDIR/$id\"" >> $CFGBEDTIME
+    #     echo "deny_info $URLBLOCK $id-blacklist" >> $CFGBEDTIME
+    # 	echo "http_access deny $id-mac $id-blacklist" >> $CFGBEDTIME
+    # 	done
+    # fi
+
+#    if [ -f "$CFGBEDTIME" ]; then
+#	echo "include \"$CFGBEDTIME\"" >> $CFGFILE
+#    fi
+
+
+    # if [ ! -f "$MACFILE" ]; then
+    # 	echo "$IFMAC" > $MACFILE # create mac file
+    # 	# pull mac list ?
+    # fi
+
+    #echo "url_rewrite_program $URLREWRITE" >> $CFGFILE
+#	echo "url_rewrite_program /usr/local/netsweeper/bin/redir --torchd $TORCHDOMAIN  --whitelist $WHITELIST -A $MACADULT -B $BINDREDIR -e -L 3 -n 8 -P3435 -i squid3.2 -o squid3.0 $POLICY_SERVER" >> $CFGFILE
+#	echo "url_rewrite_children 10 startup=4 idle=5 concurrency=8" >> $CFGFILE
+
+#    echo "url_rewrite_program /usr/local/torchredir/bin/redir --rmac $IFMAC -r 5000 -w 5000 -t 2000 -n 4 -P8081:8082:8083 -i squid3.2 -o squid3.0 $POLICY_SERVER" >> $CFGFILE
+#    echo "url_rewrite_children 1 startup=1 idle=1 concurrency=1" >> $CFGFILE
+
+     echo "url_rewrite_program /etc/squid/php-redirector.php $IFMAC $POLICY_SERVER" >> $CFGFILE
+     echo "url_rewrite_children 8 startup=4 idle=5 concurrency=6" >> $CFGFILE
+   
+	echo "url_rewrite_access allow !torch !torchapi !mytorch !ssl" >> $CFGFILE
+
+    #echo "deny_info $URLADDDEVICE localnet" >> $CFGFILE
+
+#    if [ -f "$MACNOPROFILE" ]; then
+#	noprofile=$(wc -w $MACNOPROFILE | cut -f1 -d' ')
+#    else
+#	noprofile=0
+#    fi
+
+#    if [ $noprofile -gt 0 ]; then
+#    #if [ -f "$MACNOPROFILE" ]; then
+#	echo "acl mac-noprofile arp \"$MACNOPROFILE\"" >> $CFGFILE
+#	echo "deny_info $URLNOPROFILE mac-noprofile" >> $CFGFILE
+#    fi
+
+    echo "http_access deny !safe_ports" >> $CFGFILE
+    echo "http_access deny connect !ssl_ports" >> $CFGFILE
+    echo "http_access allow localhost manager" >> $CFGFILE
+    echo "http_access deny manager" >> $CFGFILE
+#    echo "http_access deny to_localhost" >> $CFGFILE
+
+#    if [ $noprofile -gt 0 ]; then
+#    #if [ -f "$MACNOPROFILE" ]; then
+#	    echo "http_access deny mac-noprofile" >> $CFGFILE
+#    fi
+    echo "http_access allow localnet" >> $CFGFILE
+    echo "http_access deny all" >> $CFGFILE
+
+    cat $CFGGARDEN >> $CFGFILE
+}

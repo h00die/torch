@@ -1,0 +1,33 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+
+CFGFILE="/etc/config/torchdomains"
+wan_mac=$(grep "wan_mac" $CFGFILE | cut -d"=" -f2)
+ETHADDR=$(fw_printenv | grep 'ethaddr=' | cut -d= -f2 | awk -F"\"" '{print $2}')
+
+# set mac address in config
+if [ -z "$wan_mac" ]; then
+    wan_mac=$ETHADDR
+    echo "wan_mac=$wan_mac" >> $CFGFILE
+fi
+
+# eht1 = eth0 + 2 = br-lan
+counter=$(echo $ETHADDR | awk -F":" '{print $1$2$3$4$5$6}')
+counter=$(printf '%X' $(((0x$counter+2) % 0x1000000000000)))
+[ ${#counter} == 1 ] && {
+ counter="00000000000$counter"
+}
+new_mac=$(echo "$counter" | sed -e 's/^\(..\)\(..\)\(..\)\(..\)\(..\)\(..\)/\1:\2:\3:\4:\5:\6/')
+
+# set to ifconfig
+ifconfig eth1 down
+ifconfig eth1 hw ether "$new_mac"
+ifconfig eth1 up
+
+# set to ifconfig
+ifconfig br-lan down
+ifconfig br-lan hw ether "$new_mac"
+ifconfig br-lan up
+
+return 0
+

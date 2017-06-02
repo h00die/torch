@@ -1,0 +1,18 @@
+#!/bin/sh
+
+BLACKLIST="/etc/config/domain.block"
+TORCHBLOCK="localhost 22900"
+LOGFILE="/tmp/torchrewrite.log"
+DENYURL="http://192.168.10.1/block"
+
+while read URL
+do
+    SURL=$(echo ${URL} | cut -d" " -f1)
+    DOMAIN=$(echo ${SURL} | cut -d"/" -f3 | sed 's/www.//g')
+    REP=$(echo -n $DOMAIN | nc $TORCHBLOCK &  kill `pidof nc`)
+    if [ "$REP" = "DENY" ]; then
+	echo "302:$DENYURL"
+	else
+	echo $SURL
+    fi
+done

@@ -1,0 +1,60 @@
+#!/bin/sh
+
+CFGDOMAINS="/etc/config/torchdomains"
+RESOLVFILE="/etc/resolv.conf"
+DNS_LIST=$(grep "dns" $CFGDOMAINS | awk -F"\'" '{print $2}')
+UCI_DNS_LIST=$(uci -q get network.wan.dns)
+
+mod="0"
+
+#echo "DNS ->$DNS_LIST"
+#echo "UCI DNS ->$UCI_DNS_LIST"
+
+if [ ! -z "$DNS_LIST" ]; then
+   if [ -z "$UCI_DNS_LIST" ]; then
+        for dns in $DNS_LIST; do
+          uci -q add_list network.wan.dns=$dns
+        done
+
+	mod="1"
+   else
+     if [ "$DNS_LIST" != "$UCI_DNS_LIST" ]; then
+	# delete old servers
+        for dns in $UCI_DNS_LIST; do
+          uci -q del_list network.wan.dns=$dns
+        done
+
+        # create new record
+        for dns in $DNS_LIST; do
+          uci -q add_list network.wan.dns=$dns
+        done
+	
+	mod="1"
+     fi
+   fi
+else
+   if [ ! -z "$UCI_DNS_LIST" ]; then
+     for dns in $UCI_DNS_LIST; do
+       uci -q del_list network.wan.dns=$dns
+     done 
+
+     mod="1"
+   fi
+fi
+
+# need apply new settings
+if [ "$mod" == "1" ]; then
+
+    uci commit network
+
+    rm -f $RESOLVFILE
+
+    # create new symlink to /tmp/resolv.conf.auto
+    for dns in $DNS_LIST; do
+      echo "nameserver $dns" >> $RESOLVFILE
+    done
+    	
+    # restart network and DNS
+    /etc/init.d/network restart
+fi
+

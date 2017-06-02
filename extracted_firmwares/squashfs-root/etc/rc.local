@@ -1,0 +1,25 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+# update DNS
+/etc/torch/update_dns
+
+#each boot fix mac and check update_config
+/etc/torch/fix_mac
+
+/etc/init.d/pwm start round &
+
+sleep 3
+
+# check internet connection in time 300 sec after boot
+/etc/torch/forcedstart.sh 300 &
+
+# for check fw 
+#/etc/torch/update_firmware
+
+#/etc/torch/check_config
+
+# force start tinyproxy at boot
+#/etc/init.d/tinyproxy start
+
+exit 0

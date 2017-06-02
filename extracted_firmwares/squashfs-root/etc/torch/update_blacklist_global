@@ -1,0 +1,59 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+. /usr/share/libubox/jshn.sh
+
+CFGDOMAINS="/etc/config/torchdomains"
+UPDATEFILE="/etc/config/torchupdates"
+# BLOCKURLFILE="/etc/config/domain.block"
+# BLOCKIPFILE="/etc/config/ip.block"
+# NEW_LIST="/tmp/blacklist.txt"
+# BLACKLISTFILE="/tmp/"
+
+BLACKLIST_GZ="/etc/config/domain.block.gz"
+BLACKLIST_DIR="/tmp/torch/.config"
+
+LOGFILE="/tmp/torchapi.log"
+
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+LASTUPDATE=$(grep "blacklist" $UPDATEFILE | cut -d= -f2)
+APIROUTE=$(grep "api_blacklist_all" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+#XHEADERMAC=$(ifconfig eth0 | awk '/HWaddr/ { print $5 }')
+
+TIMESTAMP="date +%s"
+
+
+echo [`$TIMESTAMP`" --->] Request update global blacklist ..." >> $LOGFILE
+
+REP=$(curl -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    $TORCHDOMAIN$APIROUTE)
+
+echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+# replace 'null' by "", jshn bug
+REP=$(echo "$REP" | sed 's/null/""/g' )
+
+json_init
+json_load "$REP"
+json_get_var status status
+
+if [ "$status" == "ok" ]; then
+	json_select data
+    	json_get_var url url
+	json_get_var mtime mtime 
+    if [ "$mtime" -gt "$LASTUPDATE" ]; then
+	echo [`$TIMESTAMP`" --->] Download last global blacklist ..." >> $LOGFILE
+	wget -O $BLACKLIST_TMP $url
+	
+	mv $BLACKLIST_TMP $BLACKLIST_GZ
+	if [  $? = 0 ]; then	    
+                echo [`$TIMESTAMP`]" SUCCEED " >> $LOGFILE
+		# delete the new tmp list
+		rm $NEW_LIST
+		else
+		echo [`$TIMESTAMP`]" FAIL ! " >> $LOGFILE
+	fi
+    else
+	echo [`$TIMESTAMP`]" Blacklist up to date" >> $LOGFILE
+	fi
+fi

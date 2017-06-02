@@ -1,0 +1,82 @@
+#!/bin/sh                                                                   
+# Copyright (C) 2015 Torch Project
+
+TIMESTAMP="date +%s"
+LOGFILE="/tmp/torchapi.log"
+
+# check and get first argument as the device ip, and the second as the devicename
+if [ $# -ne 1 ]; then
+    echo [`$TIMESTAMP`] "Device add error : missing IP and DEVICE NAME params" >> $LOGFILE
+    exit 1
+fi
+
+DEVICEIP=$1
+#DEVICENAME=$2
+
+#check if ip are correct and get the mac and host name
+DEVICEMAC=$(grep $DEVICEIP /tmp/dhcp.leases | cut -f 2 -s -d" ")
+DEVICEHOST=$(grep $DEVICEIP /tmp/dhcp.leases | cut -f 4 -s -d" ")
+DEVICENAME=$DEVICEHOST
+
+if [ -z "$DEVICENAME" ] || [ "$DEVICENAME" == "*" ]; then
+	DEVICENAME="Unknown_device"
+fi
+
+DEVICESUBNET=$(echo $DEVICEIP | cut -d. -f3)
+# if device is in 192.168.10.0/24 network, then monitored
+if [ $DEVICESUBNET -eq 10 ]; then
+    DEVICESUBNET="monitored"
+    else
+    DEVICESUBNET="unmonitored"
+fi
+
+if [ -z "$DEVICEMAC" ] && [ -z "$DEVICEHOST" ]; then
+    echo [`$TIMESTAMP`] "Device add error : device not found in the dhcp.leases" >> $LOGFILE
+    exit 1
+fi
+
+
+UPDATE_DEVICES="/etc/torch/update_devices"
+CFGDOMAINS="/etc/config/torchdomains"
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+APIROUTE=$(grep "api_devices_add" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+#XHEADERMAC=$(ifconfig eth0 | awk '/HWaddr/ { print $5 }')
+
+
+echo [`$TIMESTAMP`" --->] Request add new device : $DEVICEHOST $DEVICEIP $DEVICEMAC $DEVICESUBNET to $TORCHDOMAIN$APIROUTE" >> $LOGFILE
+
+REP=$(curl -s -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    -H "x-device-mac: $DEVICEMAC" -H "x-device-ip: $DEVICEIP" \
+    -H "x-device-name: $DEVICENAME" \
+    -X POST -d '{"name":"'"$DEVICENAME"'","ip":"'"$DEVICEIP"'", "systemName":"'"$DEVICEHOST"'", "mac":"'"$DEVICEMAC"'", "network":"'"$DEVICESUBNET"'"}' $TORCHDOMAIN$APIROUTE)
+
+echo -e [`$TIMESTAMP`" <---] $REP\n"  >> $LOGFILE
+
+# OLD TRICK
+# get redirection or error
+# if echo "$REP" | grep -q "Redirecting to" ; then
+#     # pull new config and apply it
+#     $UPDATE_DEVICES
+#     # TODO : get response in json
+#     echo "{\"status\":\"ok\", \"data\":{\"url\": \"$TORCHDOMAIN/device/setup\"}}"
+#     else
+#     echo "{\"status\":\"ERROR\"}"
+# fi
+# json_init
+# json_load "$REP"
+# json_get_var status status
+
+# if [ "$status" == "ok" ]; then
+#     # hardcoded url ! MUST be returned from the API
+#     echo -e [`$TIMESTAMP`" OK !\n"  >> $LOGFILE
+#     echo "{\"status\":\"ok\", \"data\":{\"url\": \"$TORCHDOMAIN/device/setup\"}}"
+# elif [ "$status" == "error" ]; then
+#     echo -e [`$TIMESTAMP`" ERROR !\n"  >> $LOGFILE
+# else
+#     echo $REP
+# fi
+echo $REP
+
+# update device list
+/etc/torch/update_devices > /dev/null

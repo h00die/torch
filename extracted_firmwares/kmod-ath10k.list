@@ -1,0 +1,3 @@
+/etc/modules.d/55-ath10k
+/lib/modules/3.18.29/ath10k_core.ko
+/lib/modules/3.18.29/ath10k_pci.ko

@@ -1,0 +1,10 @@
+Package: kmod-fs-nfs-common
+Version: 3.18.29-1
+Depends: kernel (=3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Source: package/kernel/linux
+License: GPLv2
+Section: kernel
+Status: unknown hold not-installed
+Architecture: ar71xx
+Installed-Size: 112767
+Description:  Common NFS filesystem modules

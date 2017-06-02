@@ -1,0 +1,113 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+. /usr/share/libubox/jshn.sh
+
+CFGDOMAINS="/etc/config/torchdomains"
+UPDATEFILE="/etc/config/torchupdates"
+LOGFILE="/tmp/torchapi.log"
+
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+LASTUPDATE=$(grep "config" $UPDATEFILE | cut -d= -f2)
+APIROUTE=$(grep "api_config_all" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+#XHEADERMAC=$(ifconfig eth0 | awk '/HWaddr/ { print $5 }')
+TIMESTAMP="date +%s"
+TORCHCRYPT="/bin/torchcrypt"
+
+echo [`$TIMESTAMP`" --->] Request TorchRouter new global configuration ..." >> $LOGFILE
+
+REP=$(curl -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    $TORCHDOMAIN$APIROUTE)
+
+echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+# replace 'null' by "", jshn bug
+REP=$(echo "$REP" | sed 's/null/""/g' )
+
+json_init
+json_load "$REP"
+json_get_var status status
+
+if [ "$status" == "ok" ]; then
+	json_select data
+	json_select status
+	json_get_var configured configured
+	# if [ "$configured" = false ] ;then
+	#     echo "Warning : Wifi not yet configured from the CMS" >> $LOGFILE
+	#     # if wifi not yet configure, dont get config and force firstsetup squid
+	#     exit 1
+	# fi
+	json_select ..
+	json_select technical
+    	#json_get_var unmonitoredSsid unmonitoredSSid
+    	json_get_var monitoredSsid monitoredSSid
+    	#json_get_var unmonitoredPassword unmonitoredPassword
+    	json_get_var monitoredPassword monitoredPassword
+	json_get_var lanIP lanIP
+	json_get_var timezone timezone
+
+    if [ -n "$monitoredSsid" ] && [ -n "$monitoredPassword" ]; then
+	# decrypt wifi hash
+	#RESULT=$($TORCHCRYPT "$passwd")
+	#UNMONIT_PASS=$(echo "$unmonitoredPassword" | rev | xxd -r -p)
+	MONIT_PASS=$(echo "$monitoredPassword" | rev | xxd -r -p)
+	# and check if result is OK
+	if [ $? -eq 0 ]; then
+	    echo [`$TIMESTAMP`"] SUCCESS decrypt hash wifi ... !" >> $LOGFILE
+	    echo [`$TIMESTAMP`"] $MONIT_PASS / $UNMONIT_PASS " >> $LOGFILE
+	    # invers netwrok for lan unmonitored
+	    # same wifi for both interface 
+	    # uci set wireless.@wifi-iface[0].ssid="$monitoredSsid"
+	    # uci set wireless.@wifi-iface[0].encryption='psk2'
+	    # uci set wireless.@wifi-iface[0].key="$MONIT_PASS"
+
+	    # uci set wireless.@wifi-iface[1].ssid="$monitoredSsid"
+	    # uci set wireless.@wifi-iface[1].encryption='psk2'
+	    # uci set wireless.@wifi-iface[1].key="$MONIT_PASS"
+       
+        uci set wireless.@wifi-iface[0].ssid="$monitoredSsid"
+        if [ -z "$MONIT_PASS" ]; then
+            uci set wireless.@wifi-iface[0].encryption='none'
+        else
+            uci set wireless.@wifi-iface[0].encryption='psk2'
+        fi
+        uci set wireless.@wifi-iface[0].key="$MONIT_PASS"
+
+        uci set wireless.@wifi-iface[1].ssid="$monitoredSsid"
+        if [ -z "$MONIT_PASS" ]; then
+           uci set wireless.@wifi-iface[1].encryption='none'
+        else
+           uci set wireless.@wifi-iface[1].encryption='psk2'
+        fi
+        uci set wireless.@wifi-iface[1].key="$MONIT_PASS"
+
+	    uci commit wireless
+	    #/etc/init.d/network restart
+	    echo [`$TIMESTAMP`"] set wifi network to $ssid ..." >> $LOGFILE
+	    # set timezone
+		if [ "$timezone" == "US/Pacific" ]; then
+		    uci set system.@system[0].zonename="America/Los Angeles"
+		    uci set system.@system[0].timezone="PST8PDT,M3.2.0,M11.1.0"
+		elif [ "$timezone" == "US/Mountain" ]; then
+		    uci set system.@system[0].zonename="America/Denver"
+		    uci set system.@system[0].timezone="MST7MDT,M3.2.0,M11.1.0"
+		elif [ "$timezone" == "US/Central" ]; then
+		    uci set system.@system[0].zonename="America/Chicago"
+		    uci set system.@system[0].timezone="CST6CDT,M3.2.0,M11.1.0"
+		elif [ "$timezone" == "US/Eastern" ]; then
+		    uci set system.@system[0].zonename="America/New York"
+		    uci set system.@system[0].timezone="EST5EDT,M3.2.0,M11.1.0"
+		fi
+		uci commit system
+	    echo [`$TIMESTAMP`"] timezone set to $timezone ..." >> $LOGFILE
+	    sed -i "s/config=.*/config=`$TIMESTAMP`/g" $UPDATEFILE
+	    # and then restart !
+	    reboot -f -d 10 &
+
+	else
+	    echo [`$TIMESTAMP`"] FAILED to decrypt hash wifi ... !" >> $LOGFILE
+	fi
+    else
+	echo [`$TIMESTAMP`"] FAILED to get value : [$monitoredSsid][$monitoredPassword][$unmonitoredSsid][$unmonitoredPassword]" >> $LOGFILE
+    fi
+fi

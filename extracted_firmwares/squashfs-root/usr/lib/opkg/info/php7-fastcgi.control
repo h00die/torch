@@ -1,0 +1,12 @@
+Package: php7-fastcgi
+Version: 7.0.13-1
+Depends: libc, php7, php7-cgi
+Source: package/php7
+License: PHPv3.01
+LicenseFiles: LICENSE
+Section: lang
+Maintainer: Michael Heimpold <mhei@heimpold.de>
+Architecture: ar71xx
+Installed-Size: 523
+Description:  As FastCGI support is now a core feature the php7-fastcgi package now depends
+ on the php7-cgi package, containing just the startup script.

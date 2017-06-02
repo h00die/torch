@@ -1,0 +1,60 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+# by golli.h@nomadhack.net
+. /usr/share/libubox/jshn.sh
+
+CFGDOMAINS="/etc/config/torchdomains"
+UPDATEFILE="/etc/config/torchupdates"
+LOGFILE="/tmp/torchapi.log"
+
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+LASTUPDATE=$(grep "config" $UPDATEFILE | cut -d= -f2)
+APIROUTE=$(grep "api_config_all" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+#XHEADERMAC=$(ifconfig eth0 | awk '/HWaddr/ { print $5 }')
+TIMESTAMP="date +%s"
+FIRSTBOOT=$(grep "firstboot" $UPDATEFILE | cut -d= -f2)
+
+[ -z "$FIRSTBOOT" ] && {
+  echo "firstboot=`$TIMESTAMP`" >> $UPDATEFILE
+}
+
+[ "$FIRSTBOOT" == "0" ] && {
+  sed -i "s/firstboot=.*/firstboot=`$TIMESTAMP`/g" $UPDATEFILE
+}
+
+# check if need to config
+if [ "$LASTUPDATE" != "0" ]; then
+    echo [`$TIMESTAMP`" --->] No need new configuration ..." >> $LOGFILE
+    # else run update_profiles and update_config
+    #/etc/torch/update_blacklist_devices
+    #/etc/torch/update_blocking
+    #/etc/torch/update_profiles
+    exit 1
+fi
+
+echo [`$TIMESTAMP`" --->] Request TorchRouter new global configuration ..." >> $LOGFILE
+
+REP=$(curl -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    $TORCHDOMAIN$APIROUTE)
+
+echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+# replace 'null' by "", jshn bug
+REP=$(echo "$REP" | sed 's/null/""/g' )
+
+json_init
+json_load "$REP"
+json_get_var status status
+
+if [ "$status" == "ok" ]; then
+	json_select data
+	json_select status
+	json_get_var configured configured
+	if [ "$configured" == "0" ] ;then
+	    echo "Warning : Wifi not yet configured from the CMS" >> $LOGFILE
+	    # if wifi not yet configure, dont get config and force firstsetup squid
+	    exit 1
+	fi
+	/etc/torch/update_config
+fi

@@ -1,0 +1,91 @@
+#!/bin/sh                                                  
+# Copyright (C) 2015 Torch Project
+
+. /usr/share/libubox/jshn.sh
+
+TIMESTAMP="date +%s"
+LOGFILE="/tmp/torchapi.log"
+UNMONITFILE="/tmp/devices"
+CFGDOMAINS="/etc/config/torchdomains"
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+APIROUTE_DEVICEADD=$(grep "api_devices_add" $CFGDOMAINS | cut -d= -f2)
+APIROUTE_DEVICEALL=$(grep "api_devices_all" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+MACDELFILE="/etc/squid/mac-deleted"
+MACADULT="/etc/squid/mac-adult"
+NONPROFILEMAC="/etc/squid/mac-noprofile.acl"
+DHCPFILE="/tmp/dhcp.leases"
+
+# save unmonitored list
+if [ ! -f "$UNMONITFILE" ]; then
+	# and create it
+	touch "$UNMONITFILE"
+fi
+
+action="-"
+evtMAC="-"
+# check if get any arguments
+if [ $# -ge 1 ]; then
+    action=$1
+    evtMAC=$2 
+
+    echo [`$TIMESTAMP`] "Forced add devices request [$action/$evtMAC]" >> $LOGFILE
+
+   if [ -f "$UNMONITFILE" ]; then
+     if [ "$action" != "del" ]; then
+	#	sed -i "/$evtMAC\/.*/d" $MACDELFILE
+		isOld=$(cat "$UNMONITFILE" | grep -r "$evtMAC")
+		[ -z "$isOld" ] && {
+			echo "$evtMAC" >> "$UNMONITFILE"
+		}
+      fi
+    fi
+fi
+
+send_device_add() {
+    DEVICEMAC=$1
+    DEVICEIP=$2
+    DEVICEHOST=$3
+    DEVICENETWORK=$4
+    echo [`$TIMESTAMP`" --->] Request add new device : $DEVICEHOST $DEVICEIP $DEVICEMAC $DEVICENETWORK to $TORCHDOMAIN$APIROUTE_DEVICEADD" >> $LOGFILE
+    REP=$(curl -s -H "x-router-mac: $XHEADERMAC" \
+	    -H "Content-Type: application/json" \
+	    -H "x-device-mac: $DEVICEMAC" -H "x-device-ip: $DEVICEIP" \
+	    -H "x-device-name: $DEVICEHOST" \
+	    -X POST -d '{"name":"'"$DEVICEHOST"'","ip":"'"$DEVICEIP"'", "systemName":"'"$DEVICEHOST"'", "mac":"'"$DEVICEMAC"'", "network":"'"$DEVICENETWORK"'"}' \
+	    $TORCHDOMAIN$APIROUTE_DEVICEADD)
+  	
+	 echo -e [`$TIMESTAMP`" <---] $REP\n"  >> $LOGFILE
+
+	json_init
+	json_load "$REP"
+	json_get_var status status
+	
+	if [ "$status" == "ok" ] || [ "$status" == "error" ]; then
+		# delete device from temp file
+		if [ -f "$UNMONITFILE" ]; then
+		  sed -i "/$DEVICEMAC.*/d" "$UNMONITFILE"
+		fi
+	fi
+
+	json_cleanup
+}
+
+check_devices() {
+ 	  if [ -f "$UNMONITFILE" ]; then
+           DEVICESMAC=$(cat "$UNMONITFILE")
+           for MAC in $DEVICESMAC; do
+	    dev=$(grep -r "$MAC" "$DHCPFILE")
+	    if [ ! -z "$dev" ]; then	
+	     echo -e [`$TIMESTAMP`"] Found device $MAC ... \n"  >> $LOGFILE
+	   # sed -i "s/$MAC//g" "$UNMONITFILE"
+	     IP=$(grep "$MAC" $DHCPFILE | cut -f 3 -s -d" ")
+	     HOST=$(grep "$MAC" $DHCPFILE | cut -f 4 -s -d" ")
+	     send_device_add $MAC $IP $HOST monitored
+	   fi
+    	   done
+	  fi
+}
+
+check_devices
+

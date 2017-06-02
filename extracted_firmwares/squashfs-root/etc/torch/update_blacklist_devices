@@ -1,0 +1,67 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+. /usr/share/libubox/jshn.sh
+
+BLOCK_REMOVE="/etc/torch/blocking_remove"
+CFGDOMAINS="/etc/config/torchdomains"
+UPDATEFILE="/etc/config/torchupdates"
+BLACKLISTDIR="/etc/squid/blacklist"
+LOGFILE="/tmp/torchapi.log"
+
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+APIROUTE=$(grep "api_devices_blacklist" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+#XHEADERMAC="88:DC:96:0E:13:24"
+TIMESTAMP="date +%s"
+
+
+echo [`$TIMESTAMP`" --->] Request blocking data ..." >> $LOGFILE
+
+REP=$(curl -s -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    $TORCHDOMAIN$APIROUTE)
+
+echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+# replace 'null' by "", jshn bug
+REP=$(echo "$REP" | sed 's/null/""/g' )
+
+json_init
+json_load "$REP"
+json_get_var status status
+
+if [ "$status" == "ok" ]; then
+    # create blacklist dir if dont exist
+    mkdir -p $BLACKLISTDIR
+
+    json_select data
+    local index_data=1
+    while json_get_type _id $index_data; do
+	json_select $index_data
+	json_get_var nameId _id
+	json_get_var name name
+	json_select domains
+	local index_domain=1
+	# delete previous blacklist
+	rm $BLACKLISTDIR/$nameId-blacklist 2> /dev/null
+	while json_get_type _id $index_domain; do
+	    json_select $index_domain
+	    json_get_var domain domain
+	    echo [`$TIMESTAMP`]" got new blocked domain for $name : $domain" >> $LOGFILE
+	    echo ".$domain" >> $BLACKLISTDIR/$nameId-blacklist
+            json_select ..
+	    index_domain=$((index_domain+1))
+	done
+        json_select ..
+        json_select ..
+	index_data=$((index_data+1))
+    done
+    # update and reload profiles
+    #/etc/torch/update_profiles
+    # wait 2sec
+    # sleep 2
+    # /etc/init.d/squid stop
+    # /etc/init.d/squid start
+    #echo "{\"status\":\"ok\"}"
+    exit 1
+fi
+#echo "{\"status\":\"Error with update_blocking\"}"

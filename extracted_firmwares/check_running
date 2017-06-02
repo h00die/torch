@@ -1,0 +1,23 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+# by golli.h@nomadhack.net
+
+# check Squid
+if [[ ! $(pidof squid | cut -d" " -f1) ]]; then
+    /etc/init.d/squid start
+fi
+
+# check TorchStats
+#if [[ ! $(pidof torchstats) ]]; then
+#    /etc/init.d/torchstats start
+#fi
+
+# check TorchWebSocket
+if [[ ! $(pidof torchws) ]]; then
+    /etc/init.d/torchws start
+fi
+
+# check Torchblock Server
+# if [[ ! $(pidof torchblock-server) ]]; then
+#     /etc/init.d/torchblock-server start
+# fi

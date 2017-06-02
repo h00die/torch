@@ -1,0 +1,10 @@
+Package: xxd
+Version: 7.4-2
+Depends: libc
+Source: feeds/packages/utils/vim
+Section: utils
+Maintainer: Marko Ratkaj <marko.ratkaj@sartura.hr>
+Architecture: ar71xx
+Installed-Size: 5696
+Description:  xxd creates a hex dump of a given file or standard input, it can also convert
+ a hex dump back to its original binary form.

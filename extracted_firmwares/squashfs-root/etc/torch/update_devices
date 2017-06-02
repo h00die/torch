@@ -1,0 +1,144 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+. /usr/share/libubox/jshn.sh
+
+CFGDOMAINS="/etc/config/torchdomains"
+UPDATEFILE="/etc/config/torchupdates"
+MACNOPROFILE="/etc/squid/mac-noprofile.acl"
+LOGFILE="/tmp/torchapi.log"
+
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+APIROUTE_DEVICEALL=$(grep "api_devices_all" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+#XHEADERMAC=$(ifconfig eth0 | awk '/HWaddr/ { print $5 }')
+TIMESTAMP="date +%s"
+SQUID="/etc/init.d/squid"
+BINDFILE="/etc/squid/redirbindip"
+MACDELFILE="/etc/squid/mac-deleted"
+TMP_BINDFILE="/tmp/redirbindip"
+TMP_MACNOPROFILE="/tmp/mac-noprofile.acl"
+
+isRestart="0"
+# check if get any arguments
+if [ $# -ge 1 ]; then
+    echo [`$TIMESTAMP`] "Forced update devices request" >> $LOGFILE
+   isRestart="1"
+fi
+
+echo [`$TIMESTAMP`" --->] Request devices list ..." >> $LOGFILE
+
+REP=$(curl -s -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    $TORCHDOMAIN$APIROUTE_DEVICEALL)
+
+# echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+# replace 'null' by 'none', jshn bug
+REP=$(echo "$REP" | sed 's/null/"none"/g' )
+
+json_init
+json_load "$REP"
+json_get_var status status
+
+if [ "$status" == "ok" ]; then
+	# delete previous temp mac noprofile
+    rm $TMP_MACNOPROFILE 2>/dev/null
+    rm $TMP_BINDFILE 2>/dev/null
+
+    [ ! -f $MACDELFILE ] && echo -n > $MACDELFILE
+    [ ! -f $MACNOPROFILE ] && echo -n > $MACNOPROFILE
+    [ ! -f $BINDFILE ] && echo -n > $BINDFILE
+
+    sum_mac=$(md5sum $MACNOPROFILE | awk -F" " '{print $1}')
+    sum_ip=$(md5sum $BINDFILE | awk -F" " '{print $1}')
+	json_select data
+	local index=1
+	while json_get_type _id "$index"; do
+	    json_select $index
+	    #json_get_var _id "1"
+		json_get_var _id _id
+	    json_get_var name name
+        json_get_var online online
+	    json_get_var familyProfile familyProfile
+		json_get_var netSweeper netSweeper
+	    json_select auditing
+	    json_get_var deleted deleted	
+		json_select ..
+	    json_select technical
+	    json_get_var macAddress macAddress
+	    json_get_var ipAddress ipAddress
+	    # to avoid switch network issue
+	    # case "$ipAddress" in
+	    # 	*"192.168.20."*) send_request_unmonit 
+	    # esac
+
+	     if [ "$deleted" != "0" ]; then
+
+		delmac=$(grep -r "$macAddress" $MACDELFILE)	
+
+		if [ -z "$delmac" ]; then
+		   echo "$macAddress/0" >> $MACDELFILE
+		   echo [`$TIMESTAMP`"] Adding $macAddress into $MACDELFILE" >> $LOGFILE
+		fi
+	     fi
+
+	     if [ "$familyProfile" == "none" ] || [ -z "$familyProfile" ]; then
+		  echo $macAddress >> $TMP_MACNOPROFILE
+		  #echo [`$TIMESTAMP`"] Adding $macAddress into $TMP_MACNOPROFILE  ..." >> $LOGFILE
+	     else
+		  # add new acl client into redirector handle
+		  if [ ! -z "$netSweeper" ]; then
+                     echo "$ipAddress=$netSweeper" >> $TMP_BINDFILE
+                  else
+	             echo "$ipAddress=-" >> $TMP_BINDFILE
+                  fi 
+	      fi
+            
+	    json_select ..
+	    index=$((index+1))
+	    json_select ..
+	done
+
+	json_cleanup
+
+    # create empty file
+    [ ! -f "$TMP_MACNOPROFILE" ] && {
+      touch "$TMP_MACNOPROFILE"
+    }
+	# create empty file
+    [ ! -f "$TMP_BINDFILE" ] && {
+      touch "$TMP_BINDFILE"
+    }
+	sum_mac_new=$(md5sum $TMP_MACNOPROFILE | awk -F" " '{print $1}')
+	sum_ip_new=$(md5sum $TMP_BINDFILE | awk -F" " '{print $1}')
+
+     
+    if	[ "$sum_mac" != "$sum_mac_new" ] || \
+	[ "$sum_ip" != "$sum_ip_new" ]; then
+
+		echo -e [`$TIMESTAMP`"] DEVICES !!!NEED RESTART SQUID!!!" >> $LOGFILE
+
+		[ "$isRestart" == "0" ] && {
+         #restart squid to apply new conf
+ 		 # check squid stoped
+         $SQUID stop 2>/dev/null
+
+         # round LEDS
+         /etc/init.d/pwm start round
+         sleep 1
+        }
+
+        cp -f "$TMP_MACNOPROFILE" "$MACNOPROFILE"
+        cp -f "$TMP_BINDFILE" "$BINDFILE"
+
+		# show log info      
+        echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+	    for mac in $(cat $MACNOPROFILE); do
+		   echo [`$TIMESTAMP`"] Adding $mac into $MACNOPROFILE  ..." >> $LOGFILE
+		done
+        
+        [ "$isRestart" == "0" ] && { 
+ 		  # started squid daemon
+          $SQUID start 2>/dev/null
+		}
+    fi
+fi

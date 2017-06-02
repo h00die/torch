@@ -1,0 +1,8 @@
+Package: torchredir
+Version: 1.0.0
+Depends: libc, libpthread, libjson-c
+Source: package/torchredir
+Section: utils
+Architecture: ar71xx
+Installed-Size: 25191
+Description:  Torch SQUID Redirector

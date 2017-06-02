@@ -1,0 +1,50 @@
+#!/bin/sh
+
+LOGFILE="/tmp/torch_log"
+TIMESTAMP="date +%s"
+# BACKUPFILE="/etc/config/.oldsettings"
+
+# get SN value
+sn=$(/usr/sbin/fw_printenv | grep 'sn=' | cut -d= -f2 | awk '{print $1}')
+
+[ -z "$sn" ] && {
+ echo [`$TIMESTAMP`" --->] Not found serial number." >> $LOGFILE
+ return 0
+}
+
+[ ${#sn} != 9 ] && {
+ echo [`$TIMESTAMP`" --->] Wrong format of serial number." >> $LOGFILE
+ return 0
+}
+
+# generate new SSID
+newssid=$(echo $sn | sed -e 's/^\(...\)\(...\)\(...\)/\Torch-\2-\3/')
+
+ssid0=$(uci -q get wireless.@wifi-iface[0].ssid)
+[ -z "$ssid0" ] && ssid0='unknown'
+
+ssid1=$(uci -q get wireless.@wifi-iface[1].ssid)
+[ -z "$ssid1" ] && ssid1='unknown'
+
+# check if SSIDs has been modified
+[ "$newssid" == "$ssid0" && "$newssid" == "$ssid1" ] && return 0
+
+echo [`$TIMESTAMP`" --->] Current SSIDs: $ssid0/$ssid1. Set new SSID $newssid." >> $LOGFILE
+
+#if [ ! -f "$BACKUPFILE" ]; then
+ # set new settings
+ uci -q set wireless.@wifi-iface[0].ssid="$newssid"
+ uci -q set wireless.@wifi-iface[1].ssid="$newssid"
+ uci commit wireless
+
+ # reinit WLAN settings
+ wifi down
+ wifi up
+#else
+ # no need update settings
+# rm -rf $BACKUPFILE 
+#fi
+
+return 0
+
+

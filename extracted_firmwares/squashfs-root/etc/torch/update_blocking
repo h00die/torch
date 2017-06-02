@@ -1,0 +1,114 @@
+#!/bin/sh
+# Copyright (C) 2015 Torch Project
+. /usr/share/libubox/jshn.sh
+
+BLOCK_REMOVE="/etc/torch/blocking_remove"
+CFGDOMAINS="/etc/config/torchdomains"
+UPDATEFILE="/etc/config/torchupdates"
+BLOCKINGDIR="/etc/squid/block"
+PROFILESDIR="/etc/squid/profiles"
+FOREVERDIR="/etc/squid/blockforever"
+LOGFILE="/tmp/torchapi.log"
+CRONFILE="/etc/crontabs/root"
+CRONDEFAULT="/etc/config/crontabs"
+
+TORCHDOMAIN=$(grep "torchdomain" $CFGDOMAINS | cut -d= -f2)
+TORCHAPI=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+APIROUTE=$(grep "api_blocking" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+TIMESTAMP="date +%s"
+
+#URLPAUSE="http://192.168.10.1/pause?dst=%H"
+URLPAUSE="$TORCHDOMAIN/pause"
+
+echo [`$TIMESTAMP`" --->] Request blocking data ..." >> $LOGFILE
+
+REP=$(curl -s -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
+    $TORCHAPI$APIROUTE)
+
+echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+
+# replace 'null' by "", jshn bug
+REP=$(echo "$REP" | sed 's/null/""/g' )
+
+json_init
+json_load "$REP"
+json_get_var status status
+
+if [ "$status" == "ok" ]; then
+    # stop squid before
+    #/etc/init.d/squid stop 2>/dev/null
+    # delete previous blocking to save new, or create it
+    rm $BLOCKINGDIR/* 2>/dev/null
+    mkdir -p $BLOCKINGDIR
+    rm $FOREVERDIR/* 2>/dev/null
+    mkdir -p $FOREVERDIR
+    # delete actual crontab and reload it ?
+    rm $CRONFILE 2> /dev/null
+
+    json_select data
+    local index_data=1
+    while json_get_type _id "$index_data"; do
+	json_select "$index_data"
+	json_get_var mac mac
+	json_get_var id _id
+	echo [`$TIMESTAMP`]" got mac/id : $mac/$id" >> $LOGFILE
+
+	json_select blocking
+	json_get_var sDate sDate
+	json_get_var eDate eDate
+	json_get_var isForever isForever
+
+	if [ $isForever == 1 ] ; then
+	    echo [`$TIMESTAMP`]"Blocking $mac/$id FOREVER !" >> $LOGFILE
+	    echo $mac >> $FOREVERDIR/$id
+
+	elif [ "$eDate" ]; then
+        edt=$(date +%s --date "$eDate")
+        ndt=$(date +%s)
+        ndt=$((ndt + 60))
+
+        if [ $ndt -lt $edt ]; then
+   
+        # format 2016-09-28 08:10:36
+         d=$(echo $eDate | cut -d' ' -f1)
+         t=$(echo $eDate | cut -d' ' -f2)
+
+         year=$(echo $d | cut -d'-' -f1)
+         month=$(echo $d | cut -d'-' -f2)
+         day=$(echo $d   | cut -d'-' -f3)
+         hour=$(echo $t | cut -d':' -f1)
+         minute=$(echo $t | cut -d':' -f2)
+
+	     echo [`$TIMESTAMP`]" got blocking $mac/$id until $eDate" >> $LOGFILE
+	     echo $mac >> $BLOCKINGDIR/$id
+
+	     # check if remove blocking for profile is already in crontab
+	     if [ ! -f $CRONFILE ] || ! grep -q "$minute $hour $day $month \* $BLOCK_REMOVE $id" $CRONFILE ;then
+		  echo "$minute $hour $day $month * $BLOCK_REMOVE $id" >> $CRONFILE
+	     fi
+
+        fi # if [ $ndt -lt $edt ]; then
+
+	fi
+
+        json_select ..
+        json_select ..
+	index_data=$((index_data+1))
+    done
+    cat $CRONDEFAULT >> $CRONFILE
+
+    #echo "{\"status\":\"ok\"}"
+    json_cleanup
+
+    # restart cron 
+    /etc/init.d/cron stop 2>/dev/null
+    /etc/init.d/cron start 2>/dev/null
+
+    #/etc/torch/update_profiles
+    #restart Squid
+    #/etc/init.d/squid start 2>/dev/null
+    #/etc/init.d/cron restart 2>/dev/null
+    exit 1
+fi
+#echo "{\"status\":\"Error with update_blocking\"}"

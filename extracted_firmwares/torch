@@ -1,0 +1,41 @@
+#!/bin/sh
+
+UPDATEFILE="/etc/config/torchupdates"
+FIRMVERSION=$(grep "firmware" $UPDATEFILE | cut -d= -f2)
+LASTUPDATE=$(grep "config" $UPDATEFILE | cut -d= -f2)
+FIRSTBOOT=$(grep "firstboot" $UPDATEFILE | cut -d= -f2)
+
+OPTIND=1
+
+usage(){
+ echo "Torch tools: torch [option]"
+ echo "Options:"
+ echo "  -v   - current firmware version"
+ echo "  -c   - time of last configuration"
+ echo "  -h|? - show this message"
+ exit 0
+}
+
+if [ $# -ne 1 ]; then
+  usage
+fi
+
+while getopts " h?vc" opt; do
+        case "$opt" in
+        h|\?)
+         usage
+        ;;
+	v)
+ 	 dt=$(date -d @$FIRSTBOOT +'%Y-%m-%d %H:%M:%S')
+	 echo "$FIRMVERSION $dt"
+	;;
+	c)
+ 	 dt=$(date -d @$LASTUPDATE +'%Y-%m-%d %H:%M:%S')
+	 echo "$dt"
+	;;
+        esac
+done
+
+shift $((OPTIND-1))
+[ "$1" = "--" ] && shift
+

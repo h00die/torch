@@ -1,0 +1,9 @@
+Package: ath10k-firmware-qca988x
+Version: 2014-11-13-77f72b5f7dd940386d9e619a17904987759b7186-1
+Depends: libc
+Source: package/firmware/ath10k-firmware
+Section: kernel
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 217769
+Description:  ath10k firmware for QCA988x devices

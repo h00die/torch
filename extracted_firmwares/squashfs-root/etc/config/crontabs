@@ -1,0 +1,5 @@
+* * * * * /etc/torch/check_running
+#* * * * * /etc/torch/update_devices
+#* * * * * sleep 2;/etc/torch/device_add_unmonit
+#* * * * * sleep 3;/etc/torch/update_profiles
+0 2 * * * sleep 4;/etc/torch/update_firmware

@@ -1,0 +1,49 @@
+#!/bin/sh
+
+CFGDOMAINS="/etc/config/torchdomains"
+CFGUPDATES="/etc/config/torchupdates"
+CFGMSMTP="/etc/config/msmtp"
+
+LOGFILE="/tmp/torchapi.log"
+TORCHDOMAIN=$(grep "torchapi" $CFGDOMAINS | cut -d= -f2)
+XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
+EMAIL=$(grep "log_email" $CFGDOMAINS | awk -F'\"' '{print $2}')
+
+if [ -z "$EMAIL" ]; then
+  exit 	
+fi
+
+TIMESTAMP=$(date)
+
+EMAILFILE="/tmp/email"
+RECIPIENT="$EMAIL"
+SUBJECT="$XHEADERMAC"
+
+echo "To: $RECIPIENT" > $EMAILFILE
+echo "Subject: $SUBJECT" >> $EMAILFILE
+
+echo " " >> $EMAILFILE
+echo "#####################" >> $EMAILFILE
+echo "ROUTER $XHEADERMAC, $TIMESTAMP" >> $EMAILFILE
+
+echo " " >> $EMAILFILE
+echo "### DOMAIN CONFIG ###" >> $EMAILFILE
+cat $CFGDOMAINS >> $EMAILFILE
+
+echo " " >> $EMAILFILE
+echo "### UPDATES CONFIG ###" >> $EMAILFILE
+cat $CFGUPDATES >> $EMAILFILE
+
+echo " " >> $EMAILFILE
+echo "### WIFI SETTINGS ###" >> $EMAILFILE
+cat /etc/config/wireless >> $EMAILFILE
+
+echo " " >> $EMAILFILE
+echo "### API LOG ###" >> $EMAILFILE
+cat $LOGFILE >> $EMAILFILE
+
+echo " " >> $EMAILFILE
+echo "### END OF MESSAGE ###" >> $EMAILFILE
+
+cat "$EMAILFILE" | sendmail -C $CFGMSMTP -t
+

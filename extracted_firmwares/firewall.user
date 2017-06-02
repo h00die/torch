@@ -1,0 +1,17 @@
+# This file is interpreted as shell script.
+# Put your custom iptables rules here, they will
+# be executed with each firewall (re-)start.
+
+# Internal uci firewall chains are flushed and recreated on reload, so
+# put custom rules into the root chains e.g. INPUT or FORWARD or into the
+# special user chains, e.g. input_wan_rule or postrouting_lan_rule.
+
+# local web redirection #
+iptables -t nat -A PREROUTING -p tcp -s 192.168.10.0/24 --dport 80 -d 192.168.10.1 -j REDIRECT --to-port 80
+# Squid iptables #
+iptables -t nat -A PREROUTING -p tcp -s 192.168.10.0/24 --dport 80 -j REDIRECT --to-port 3128
+iptables -t nat -A PREROUTING -p tcp -s 192.168.10.0/24 --dport 443 -j REDIRECT --to-port 3129
+
+# block google.com and youtube.com ?
+iptables -I FORWARD -i eth0 -p udp -m udp --dport 50000:60000 -j REJECT --reject-with icmp-port-unreachable
+

@@ -1,0 +1,28 @@
+#!/bin/sh                                                                   
+# Copyright (C) 2015 Torch Project
+
+TIMESTAMP="date +%s"
+LOGFILE="/tmp/torchapi.log"
+BLOCKINGDIR="/etc/squid/block"
+
+# check and get first argument as the profile id
+if [ $# -ne 1 ]; then
+    echo [`$TIMESTAMP`] "Blocking remove error : missing profile id" >> $LOGFILE
+    exit 1
+fi
+
+ID=$1
+echo [`$TIMESTAMP`] "Remove blocking for $ID" >> $LOGFILE
+rm $BLOCKINGDIR/$ID
+# sed -i "s/$MAC//g" $BLOCKINGFILE
+
+# #check if there is no more mac for blocking
+# n=$(wc -w $BLOCKINGFILE | cut -f1 -d' ')
+
+# if [ $n -eq 0 ]; then
+#     echo [`$TIMESTAMP`] "Delete blocking file" >> $LOGFILE
+#     rm $BLOCKINGFILE
+# fi
+
+# do profiles update
+/etc/torch/update_profiles "restart"
