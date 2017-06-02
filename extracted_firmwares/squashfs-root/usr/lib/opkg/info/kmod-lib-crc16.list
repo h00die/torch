@@ -1,3 +1,3 @@
-/lib/modules/3.18.29/crc16.ko
 /etc/modules-boot.d/20-lib-crc16
 /etc/modules.d/20-lib-crc16
+/lib/modules/3.18.45/crc16.ko

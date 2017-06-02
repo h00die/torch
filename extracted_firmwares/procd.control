@@ -6,5 +6,5 @@ License: GPL-2.0
 Section: base
 Maintainer: John Crispin <blogic@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 32455
+Installed-Size: 32278
 Description:  OpenWrt system process manager

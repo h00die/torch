@@ -1,10 +1,10 @@
 Package: kmod-fs-nfs
-Version: 3.18.29-1
-Depends: kernel (=3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-fs-nfs-common, kmod-dnsresolver
+Version: 3.18.45-1
+Depends: kernel (=3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-fs-nfs-common, kmod-dnsresolver
 Source: package/kernel/linux
 License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 71941
+Installed-Size: 72433
 Description:  Kernel module for NFS support

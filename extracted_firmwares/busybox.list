@@ -7,13 +7,12 @@
 /usr/bin/test
 /bin/zcat
 /bin/fgrep
-/sbin/halt
 /bin/ash
+/sbin/halt
 /sbin/reboot
 /bin/true
 /sbin/route
 /usr/bin/md5sum
-/usr/bin/free
 /usr/sbin/ntpd
 /usr/bin/time
 /usr/bin/passwd
@@ -57,9 +56,8 @@
 /etc/init.d/sysntpd
 /bin/date
 /usr/bin/wc
-/usr/bin/nslookup
 /usr/bin/[
-/usr/bin/pgrep
+/usr/bin/nslookup
 /bin/umount
 /bin/netmsg
 /usr/bin/tail
@@ -90,7 +88,6 @@
 /bin/tar
 /bin/rev
 /usr/bin/yes
-/usr/bin/top
 /sbin/switch_root
 /usr/bin/expr
 /usr/bin/env

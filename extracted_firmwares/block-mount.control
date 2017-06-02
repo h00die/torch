@@ -6,5 +6,5 @@ License: GPL-2.0
 Section: base
 Maintainer: John Crispin <blogic@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 16936
+Installed-Size: 16913
 Description:  Block device mounting and checking

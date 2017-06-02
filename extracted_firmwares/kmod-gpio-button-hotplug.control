@@ -1,10 +1,10 @@
 Package: kmod-gpio-button-hotplug
-Version: 3.18.29-1
-Depends: kernel (=3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (=3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Source: package/kernel/gpio-button-hotplug
 Section: kernel
 Architecture: ar71xx
-Installed-Size: 4497
+Installed-Size: 4517
 Description:  This is a replacement for the following in-kernel drivers:
  1) gpio_keys (KEYBOARD_GPIO)
  2) gpio_keys_polled (KEYBOARD_GPIO_POLLED)

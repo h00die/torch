@@ -1,3 +1,3 @@
-/lib/modules/3.18.29/nf_nat_ftp.ko
 /etc/modules.d/nf-nathelper
-/lib/modules/3.18.29/nf_conntrack_ftp.ko
+/lib/modules/3.18.45/nf_conntrack_ftp.ko
+/lib/modules/3.18.45/nf_nat_ftp.ko

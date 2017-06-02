@@ -1,5 +1,5 @@
 Package: kernel
-Version: 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f
+Version: 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3
 Depends: libc
 Source: package/kernel/linux
 License: GPLv2

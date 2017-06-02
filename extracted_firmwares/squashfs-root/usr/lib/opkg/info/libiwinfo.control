@@ -6,6 +6,6 @@ License: GPL-2.0
 Section: libs
 Maintainer: Jo-Philipp Wich <jow@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 22079
+Installed-Size: 22151
 Description:  Wireless information library with consistent interface for proprietary Broadcom,
  madwifi, nl80211 and wext driver interfaces.

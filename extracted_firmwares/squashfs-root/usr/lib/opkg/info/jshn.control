@@ -6,5 +6,5 @@ License: ISC
 Section: utils
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 5125
+Installed-Size: 5130
 Description:  Library for parsing and generating JSON from shell scripts

@@ -6,5 +6,5 @@ License: MIT
 LicenseFiles: LICENSE libtomcrypt/LICENSE libtommath/LICENSE
 Section: net
 Architecture: ar71xx
-Installed-Size: 82013
+Installed-Size: 81939
 Description:  A small SSH2 server/client designed for small memory environments.

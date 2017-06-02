@@ -1,2 +1,2 @@
-/lib/modules/3.18.29/pppoe.ko
 /etc/modules.d/pppoe
+/lib/modules/3.18.45/pppoe.ko

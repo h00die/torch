@@ -1,5 +1,5 @@
 Package: php7-mod-json
-Version: 7.0.13-1
+Version: 7.1.1-1
 Depends: libc, php7
 Source: package/php7
 License: PHPv3.01
@@ -7,5 +7,5 @@ LicenseFiles: LICENSE
 Section: lang
 Maintainer: Michael Heimpold <mhei@heimpold.de>
 Architecture: ar71xx
-Installed-Size: 13055
+Installed-Size: 13637
 Description:  JSON shared module

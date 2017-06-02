@@ -1,3 +1,3 @@
-/lib/modules/3.18.29/vfat.ko
 /etc/modules.d/30-fs-vfat
-/lib/modules/3.18.29/fat.ko
+/lib/modules/3.18.45/vfat.ko
+/lib/modules/3.18.45/fat.ko

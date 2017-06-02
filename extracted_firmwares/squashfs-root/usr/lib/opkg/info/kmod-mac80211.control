@@ -1,9 +1,9 @@
 Package: kmod-mac80211
-Version: 3.18.29+2016-01-10-1
-Depends: kernel (=3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-cfg80211, hostapd-common, kmod-crypto-core, kmod-crypto-arc4
+Version: 3.18.45+2016-01-10-1
+Depends: kernel (=3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-cfg80211, hostapd-common, kmod-crypto-core, kmod-crypto-arc4
 Source: package/kernel/mac80211
 Section: kernel
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 235971
+Installed-Size: 235877
 Description:  Generic IEEE 802.11 Networking Stack (mac80211)

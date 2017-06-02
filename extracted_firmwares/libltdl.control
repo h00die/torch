@@ -6,5 +6,5 @@ License: GPL-2.0+
 LicenseFiles: COPYING
 Section: libs
 Architecture: ar71xx
-Installed-Size: 12385
+Installed-Size: 12391
 Description:  A generic dynamic object loading library

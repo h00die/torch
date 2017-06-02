@@ -7,7 +7,7 @@ LicenseFiles: COPYING
 Section: net
 Maintainer: Maxim Storchak <m.storchak@gmail.com>
 Architecture: ar71xx
-Installed-Size: 175997
+Installed-Size: 175999
 Description:  Wget is a network utility to retrieve files from the Web using http
  and ftp, the two most widely used Internet protocols. It works
  non-interactively, so it will work in the background, after having

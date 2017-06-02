@@ -12,12 +12,21 @@ FIRMVERSION=$(grep "firmware" $UPDATEFILE | cut -d= -f2)
 APIROUTE=$(grep "api_firmware" $CFGDOMAINS | cut -d= -f2)
 XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
 TIMESTAMP="date +%s"
-UPG_VER=$(grep "upg_ver" $UPDATEFILE | cut -d= -f2)
-UPG_RETRY=$(grep "upg_retry" $UPDATEFILE | cut -d= -f2)
-
 BACKUPFIRMWARE="/tmp/firmware.bin"
 SEND_LOGS="/etc/torch/send_logs"
-MAX_RETRY_NUM=2
+
+LOCKFILE="/tmp/firmware.lock"
+
+VERBOSE=1
+
+log() {
+	local msg="[`$TIMESTAMP`]> $@"
+	echo "$msg" >> $LOGFILE
+	[ ! -z "$VERBOSE" ] && [ "$VERBOSE" -ge 1 ] && {
+		logger -s "${0##*/} $msg"
+		echo "<1>${0##*/} $msg" > /dev/kmsg
+	}
+}
 
 send_log_on_email() {
 	# send log on email
@@ -27,60 +36,67 @@ send_log_on_email() {
 	fi
 }
 
+if [ -f "$LOCKFILE" ]; then
+	t=$(cat "$LOCKFILE")
+	dt=$((`$TIMESTAMP` - t))
+
+	# less 300 sec
+	[ "$dt" -lt 300 ] && {
+		log "Detected attempt to parallel execution of multiple processes for updating firmware. Exit!"
+
+		send_log_on_email
+		exit 0
+	}
+fi
+
+echo -e `$TIMESTAMP` > "$LOCKFILE"
+
 do_version_check() {
 
-   if [ "$1" == "$2" ]; then
-       echo [`$TIMESTAMP`" --->] No new firmware version ..." >> $LOGFILE
-       return 0
-   fi
+	if [ "$1" == "$2" ]; then
+		log "No new firmware version ..."
+		return 0
+	fi
 
-   ver1_new=`echo $1 | cut -d "." -f1`
-   ver2_new=`echo $1 | cut -d "." -f2`
-   ver3_new=`echo $1 | cut -d "." -f3`
+	ver1_new=`echo $1 | cut -d "." -f1`
+	ver2_new=`echo $1 | cut -d "." -f2`
+	ver3_new=`echo $1 | cut -d "." -f3`
 
-   ver1_old=`echo $2 | cut -d "." -f1`
-   ver2_old=`echo $2 | cut -d "." -f2`
-   ver3_old=`echo $2 | cut -d "." -f3`
+	ver1_old=`echo $2 | cut -d "." -f1`
+	ver2_old=`echo $2 | cut -d "." -f2`
+	ver3_old=`echo $2 | cut -d "." -f3`
 
-  # if [ "$ver1_new" -gt "$ver1_old" ] || [ "$ver2_new" -gt "$ver2_old" ] || [ "$ver3_new" -gt "$ver3_old" ]; then
-  #     echo [`$TIMESTAMP`" --->] New firmware version $1" >> $LOGFILE
-  #     return 1
-  # else
-  #     echo [`$TIMESTAMP`" --->] No new firmware version ..." >> $LOGFILE
-  #     return 0
-  # fi
+	upg="0"
 
-   upg="0"
+	if [ "$ver1_new" -gt "$ver1_old" ]; then
+		upg="1"
+	else
+		if [ "$ver2_new" -gt "$ver2_old" ]; then
+			upg="1"
+		else
+			if [ "$ver2_new" -eq "$ver2_old" ] && [ "$ver3_new" -gt "$ver3_old" ]; then
+				upg="1"
+			fi
+		fi
+	fi
 
-   if [ "$ver1_new" -gt "$ver1_old" ]; then
-        upg="1"
-   else
-     if [ "$ver2_new" -gt "$ver2_old" ]; then
-        upg="1"
-     else
-        if [ "$ver2_new" -eq "$ver2_old" ] && [ "$ver3_new" -gt "$ver3_old" ]; then
-          upg="1"
-        fi
-     fi
-   fi
-
-   if  [ "$upg" == "1" ]; then
-       echo [`$TIMESTAMP`" --->] New firmware version $1" >> $LOGFILE
-       return 1
-   else
-       echo [`$TIMESTAMP`" --->] No new firmware version ..." >> $LOGFILE
-       return 0
-   fi
+	if  [ "$upg" == "1" ]; then
+		log "New firmware version $1"
+		return 1
+	else
+		log "No new firmware version ..."
+		return 0
+	fi
 }
 
 
-echo [`$TIMESTAMP`" --->] Request Firmware update ..." >> $LOGFILE
-echo [`$TIMESTAMP`" --->] $TORCHDOMAIN$APIROUTE" >> $LOGFILE
+log "Request Firmware update ..."
+log "$TORCHDOMAIN$APIROUTE"
 
 REP=$(curl -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
     -X GET $TORCHDOMAIN$APIROUTE)
 
-echo -e [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+log "<--- $REP"
 
 # replace 'null' by "", jshn bug
 REP=$(echo "$REP" | sed 's/null/""/g' )
@@ -95,10 +111,19 @@ if [ "$status" == "ok" ]; then
 	json_get_var version version
 	json_get_var checksum checksum
 	json_get_var fileName fileName
+	
+	UPGMD5=""
+	UPGVER=""
+	UPGFW=""
+	if [ ! -z $(uci -q get system.upg) ]; then
+		UPGMD5=$(uci -q get system.upg.md5)
+		UPGVER=$(uci -q get system.upg.ver)
+		UPGFW=$(uci -q get system.upg.fw)
+	fi
 
-	if [ ! -z "$UPG_VER" ] && [ ! -z "$UPG_RETRY" ]; then
-		if [ "$UPG_VER" == "$version" ] && [ $UPG_RETRY -ge 1 ]; then
-			echo [`$TIMESTAMP`" --->] Updating the firmware is already made, but unsuccessful. Exit!" >> $LOGFILE
+	if [ ! -z "$UPGVER" ] && [ ! -z "$UPGMD5" ] && [ ! -z "$UPGFW" ]; then
+		if [ "$UPGVER" == "$version" ] && [ "$UPGMD5" == "$checksum" ] && [ "$UPGFW" == "$fileName" ]; then
+			log "Updating the firmware is already made, but unsuccessful ($UPGVER,$UPGMD5,$UPGFW). Exit!"
 			# free JSON
 			json_cleanup
 
@@ -112,7 +137,16 @@ if [ "$status" == "ok" ]; then
 	do_version_check "$version" "$FIRMVERSION"
 	if [ $? != 0 ]; then
 
+		. /lib/functions/system.sh
+
+		# stop cron
+		/etc/init.d/cron stop
+
+		# stop squid
+		/etc/init.d/squid stop
+
 		# OK, need update firmware
+		MAX_RETRY_NUM=2
 		RETRY_NUM=0
 		while [ $RETRY_NUM -le $MAX_RETRY_NUM ]; do
 
@@ -123,57 +157,89 @@ if [ "$status" == "ok" ]; then
 				rm -f "/tmp/$fileName"
 			fi
 
-			wget -O "/tmp/$fileName" "$url" 2>> $LOGFILE
-			md5=`md5sum /tmp/${fileName} | awk '{ print $1 }'`
+			wget --timeout 120  -O "/tmp/$fileName" "$url" 2>> $LOGFILE
+			md5=$(md5sum /tmp/${fileName} | awk '{ print $1 }')
 			if [ "$md5" == "$checksum" ]; then
-				echo [`$TIMESTAMP`" --->] Checksum file ok! Saving config and start firmware update ..." >> $LOGFILE
-				
-				# store info in old firmware
-				if [ -z "$UPG_VER" ]; then
-					echo "upg_ver=$version" >> $UPDATEFILE
-				else
-					sed -i "s/upg_ver=.*/upg_ver=$version/g" $UPDATEFILE
+				log "Checksum file ok! Saving config and start firmware update ..."
+
+				if [ -z $(uci -q get system.upg) ]; then
+					uci -q set system.upg=info
+					# store info in old firmware
+					uci -q set system.upg.md5="$checksum"
+					uci -q set system.upg.ver="$version"
+					uci -q set system.upg.fw="$fileName"
+
+					uci commit system
 				fi
 
-				if [ -z "$UPG_RETRY" ]; then
-					echo "upg_retry=0" >> $UPDATEFILE
-				else
-					UPG_RETRY=$((UPG_RETRY+1))
-					sed -i "s/upg_retry=.*/upg_retry=$UPG_RETRY/g" $UPDATEFILE
-				fi
+				store_backup="0"
 
 				mtd_dev=$(cat '/proc/mtd' | grep 'firmware' | awk -F':' '{print $1}')
 				if [ -z "$mtd_dev" ]; then
-					echo [`$TIMESTAMP`" --->] Not found MTD device \"firmware\". Сontinue without creating a backup firmware!" >> $LOGFILE
+					log "Not found MTD device \"firmware\". Continue without creating a backup firmware!"
 				else
+					#check free RAM space
+					freeMem=$(grep "MemFree" /proc/meminfo | awk -F" " '{print $2}')
+					mtd_size=$(mtd_get_part_size "firmware")
 
-					echo [`$TIMESTAMP`" --->] Begin store backup into RAM ($BACKUPFIRMWARE)" >> $LOGFILE
+					# in kB
+					mtd_size=$((mtd_size/1024))
 
-					cat "/dev/$mtd_dev" > $BACKUPFIRMWARE
+					log "Detect RAM free space $freeMem kB, need $mtd_size kB."
 
-					echo [`$TIMESTAMP`" --->] Store done." >> $LOGFILE
-					echo [`$TIMESTAMP`" --->] "`ls -la $BACKUPFIRMWARE` >> $LOGFILE
+					if [ $mtd_size -ge $freeMem ]; then
+						log "Not enough free memory. Continue without creating a backup firmware!"
+					else
+						log "Begin store backup into RAM ($BACKUPFIRMWARE)"
+
+						RETRY_BACKUP_NUM=0
+						while [ $RETRY_BACKUP_NUM -le 2 ]; do
+
+							RETRY_BACKUP_NUM=$((RETRY_BACKUP_NUM+1))
+
+							# remove old backup file
+							rm -f "$BACKUPFIRMWARE"
+
+							# store current firmware into RAM
+							cat "/dev/$mtd_dev" > $BACKUPFIRMWARE
+
+							log "Check backup md5sum..."
+							md5_d=$(md5sum "/dev/$mtd_dev" | awk -F" " '{print $1}')
+							md5_f=$(md5sum "$BACKUPFIRMWARE" | awk -F" " '{print $1}')
+							if [ "$md5_d" == "$md5_f" ]; then
+								store_backup="1"
+								break
+							fi
+							log "Wrong md5sum org/file [\"$md5_d\" / \"$md5_f\"].Retry [$RETRY_BACKUP_NUM]"
+						done
+
+						log "Store done."
+						log "`ls -la $BACKUPFIRMWARE`"
+					fi
 				fi
 
-				echo [`$TIMESTAMP`" --->] Begin upgrade " >> $LOGFILE
+				log "Begin upgrade"
 				mtd write "/tmp/$fileName" firmware 2>> $LOGFILE
 
 				VERIFY_FILE="/tmp/verify"
-				echo [`$TIMESTAMP`" --->] Verification new firmware..." >> $LOGFILE
+				log "Verification new firmware..."
 
 				mtd verify "/tmp/$fileName" firmware 2> $VERIFY_FILE
 
-				echo [`$TIMESTAMP`" --->] "`cat $VERIFY_FILE` >> $LOGFILE
+				log "`cat $VERIFY_FILE`"
 
 				if [ -z $(cat $VERIFY_FILE | grep 'Success') ]; then
 					# Verify failed
-					if [ ! -z "$mtd_dev" ] && [ -f "$BACKUPFIRMWARE" ]; then
-						echo [`$TIMESTAMP`" --->] Rollback to old firmware." >> $LOGFILE
-						
+					if [ "$store_backup" == "1" ] && [ -f "$BACKUPFIRMWARE" ]; then
+						log "Rollback to old firmware."
+
+						# free space, remove new firmware
+						rm -f "/tmp/$fileName"
+
 						# restore old firmware
 						mtd write "$BACKUPFIRMWARE" firmware 2>> $LOGFILE
 
-						echo [`$TIMESTAMP`" --->] Rollback done." >> $LOGFILE
+						log "Rollback done."
 					fi
 
 					# send log on email
@@ -183,13 +249,13 @@ if [ "$status" == "ok" ]; then
 					reboot -f
 				else
 					# Verify success
-					echo [`$TIMESTAMP`" --->] Send PUT response" >> $LOGFILE
+					log "Send PUT response"
 
 					REP=$(curl -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
 						-X PUT -d '{"firmwareVersion":"'"$version"'"}' \
 						$TORCHDOMAIN$APIROUTE)
 
-					echo [`$TIMESTAMP`" <---] $REP" >> $LOGFILE
+					log "<--- $REP"
 
 					# system reboot 
 					reboot -f
@@ -198,27 +264,32 @@ if [ "$status" == "ok" ]; then
 				# while exit
 				break
 			else
-				echo [`$TIMESTAMP`" --->] Bad checksum! Retry firmware upgrade [$RETRY_NUM]" >> $LOGFILE
+				log "Bad checksum! Retry firmware upgrade [$RETRY_NUM]"
 			fi
 		done
 		
 		if [ $RETRY_NUM -ge $MAX_RETRY_NUM ]; then
-			echo [`$TIMESTAMP`" --->] Firmware not upgraded! Exit." >> $LOGFILE
+			log "Firmware not upgraded! Exit."
 
 			# send log on email
 			send_log_on_email
 
 		fi
+	
+		# start cron
+		/etc/init.d/cron start
 
 	else
-      echo [`$TIMESTAMP`] " -->] Triggered firmware (send PUT response)" >> $LOGFILE
+      log "Triggered firmware (send PUT response)"
 
 	  REP=$(curl -H "x-router-mac: $XHEADERMAC" -H "Content-Type: application/json" \
 		    -X PUT -d '{"firmwareVersion":"'"$FIRMVERSION"'"}' \
 		    $TORCHDOMAIN$APIROUTE)
 
-	  echo [`$TIMESTAMP`] " <--] $REP" >> $LOGFILE
+	  log "<--- $REP"
 	fi
 fi
 
+# remove lock
+rm -f "$LOCKFILE"
 

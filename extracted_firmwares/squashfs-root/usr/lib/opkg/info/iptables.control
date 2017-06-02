@@ -5,7 +5,7 @@ Source: package/network/utils/iptables
 License: GPL-2.0
 Section: net
 Architecture: ar71xx
-Installed-Size: 21077
+Installed-Size: 21072
 Description:  IP firewall administration tool.
  
  Matches:

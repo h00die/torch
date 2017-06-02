@@ -6,5 +6,5 @@ License: ISC
 Section: base
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 11700
+Installed-Size: 11683
 Description:  OpenWrt signature verification utility

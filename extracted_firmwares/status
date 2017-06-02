@@ -1,16 +1,23 @@
+Package: procps-w
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704394
+
 Package: kmod-usb-storage
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-scsi-core, kmod-usb-core
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-scsi-core, kmod-usb-core
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: terminfo
 Version: 5.9-2
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 Auto-Installed: yes
 
 Package: libuci-lua
@@ -18,14 +25,14 @@ Version: 2015-08-27.1-1
 Depends: libc, libuci, liblua
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: iwinfo
 Version: 2015-06-01-ade8b1b299cbd5748db1acf80dd3e9f567938371
 Depends: libc, libiwinfo
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 
 Package: libc
 Version: 0.9.33.2-1
@@ -33,7 +40,7 @@ Depends: libgcc
 Status: install hold installed
 Essential: yes
 Architecture: ar71xx
-Installed-Time: 1484150452
+Installed-Time: 1487704373
 Auto-Installed: yes
 
 Package: opkg
@@ -44,21 +51,21 @@ Architecture: ar71xx
 Conffiles:
  /etc/opkg.conf b73c0a02cb7bc300b2e6c7c29e8e6d38bd
  /etc/opkg/customfeeds.conf 61d1f3aa62fe977614ed0c2f0ad3b2ee2f
-Installed-Time: 1484150455
+Installed-Time: 1487704386
 
 Package: wget
 Version: 1.17.1-1
 Depends: libc, libpcre, libopenssl, librt
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150456
+Installed-Time: 1487704398
 
 Package: kmod-usb-core
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nls-base
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nls-base
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: libpthread
 Version: 0.9.33.2-1
@@ -66,14 +73,14 @@ Depends: libgcc
 Status: install hold installed
 Essential: yes
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704383
 
 Package: ubus
 Version: 2015-05-25-f361bfa5fcb2daadf3b160583ce665024f8d108e
 Depends: libc, libubus, libblobmsg-json, ubusd
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
 Package: iw
@@ -81,14 +88,21 @@ Version: 4.3-1
 Depends: libc, libnl-tiny
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 
 Package: kmod-ath10k
-Version: 3.18.29+2016-01-10-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ath, ath10k-firmware-qca988x
+Version: 3.18.45+2016-01-10-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ath, ath10k-firmware-qca988x
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
+
+Package: procps-vmstat
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704394
 
 Package: rpcd
 Version: 2016-04-13-73aea9b8b621a1ce034bc6ee00c9d058a40c8a3d
@@ -97,7 +111,7 @@ Status: install user installed
 Architecture: ar71xx
 Conffiles:
  /etc/config/rpcd 9f58e09bb250fe6cee61c873ff2c1a19cb
-Installed-Time: 1484150455
+Installed-Time: 1487704391
 
 Package: busybox
 Version: 1.23.2-1
@@ -105,79 +119,78 @@ Depends: libc
 Status: install user installed
 Essential: yes
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 
 Package: odhcpd
 Version: 2015-11-19-01d3f9d64486ac1daa144848944e877e7f0cb762
 Depends: libc, libubox, libuci, libubus
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704385
 
 Package: libubus-lua
 Version: 2015-05-25-f361bfa5fcb2daadf3b160583ce665024f8d108e
 Depends: libc, libubus, liblua
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: kmod-crypto-hash
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-crypto-core
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-crypto-core
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 
 Package: libiwinfo-lua
 Version: 2015-06-01-ade8b1b299cbd5748db1acf80dd3e9f567938371
 Depends: libc, libiwinfo, liblua
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
-Package: libmcrypt
-Version: 2.5.8-2
-Depends: libc
+Package: procps-tload
+Version: 3.2.8-1
+Depends: libc, procps
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
-Auto-Installed: yes
+Installed-Time: 1487704394
 
 Package: swconfig
 Version: 10
 Depends: libc, libuci, libnl-tiny
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704391
 
 Package: libthread-db
 Version: 0.9.33.2-1
 Status: install hold installed
 Essential: yes
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: libiwinfo
 Version: 2015-06-01-ade8b1b299cbd5748db1acf80dd3e9f567938371
 Depends: libc, libnl-tiny, libuci
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 Auto-Installed: yes
 
 Package: squid
-Version: 3.5.12-1
+Version: 3.5.24-1
 Depends: libc, libopenssl, libpthread, librt, libltdl, libstdcpp
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150456
+Installed-Time: 1487704398
 
 Package: libcurl
 Version: 7.40.0-3.2
 Depends: libc, libpolarssl
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 Auto-Installed: yes
 
 Package: openssl-util
@@ -187,49 +200,42 @@ Status: install user installed
 Architecture: ar71xx
 Conffiles:
  /etc/ssl/openssl.cnf 06baa8f15992bacd3e5b113cd571d828c0
-Installed-Time: 1484150455
-
-Package: torchcrypt
-Version: 1
-Depends: libc, libmcrypt, libopenssl
-Status: install user installed
-Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704386
 
 Package: kmod-lib-crc-ccitt
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: nginx-syslog
 Version: 1.4.7-2
 Depends: libc, nginx
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704393
 
 Package: kmod-nf-nathelper
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nf-nat
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nf-nat
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: kmod-pppoe
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ppp, kmod-pppox
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ppp, kmod-pppox
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: kmod-pppox
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ppp
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ppp
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 Auto-Installed: yes
 
 Package: nginx-naxsi
@@ -237,14 +243,14 @@ Version: 1.4.7-2
 Depends: libc, nginx
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704393
 
 Package: kmod-ipt-conntrack
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ipt-core, kmod-nf-conntrack
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ipt-core, kmod-nf-conntrack
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: base-files
@@ -267,81 +273,74 @@ Conffiles:
  /etc/rc.local 515018aa94eb4937dade12dc0d69890b35
  /etc/sysupgrade.conf 9e87b05fe2f12c84d1c465b39632274847
  /etc/config/system aca0e4018d2f4539acb2be210b4eea3b83
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 
 Package: kmod-lib-crc16
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 Auto-Installed: yes
 
 Package: kmod-nf-nat
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nf-conntrack, kmod-nf-ipt
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nf-conntrack, kmod-nf-ipt
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: php7-cgi
-Version: 7.0.13-1
+Version: 7.1.1-1
 Depends: libc, php7
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704390
 
 Package: libpcre
 Version: 8.39-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704387
 Auto-Installed: yes
 
 Package: kmod-fs-msdos
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-fs-vfat, kmod-nls-base
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-fs-vfat, kmod-nls-base
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 
-Package: torchredir
-Version: 1.0.0
-Depends: libc, libpthread, libjson-c
+Package: procps-pwdx
+Version: 3.2.8-1
+Depends: libc, procps
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704394
 
 Package: netifd
 Version: 2015-12-16-245527193e90906451be35c2b8e972b8712ea6ab
 Depends: libc, libuci, libnl-tiny, libubus, ubus, ubusd, jshn, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
-
-Package: kmod-mtdtests
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
-Status: install hold installed
-Architecture: ar71xx
-Installed-Time: 1484150454
 
 Package: uboot-envtools
 Version: 2014.10-2
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704392
 
 Package: libwebsockets
 Version: 2014-03-01-388dc7d201d8d123841869fb49ec4d94d6dd7f54
 Depends: libc, zlib, libopenssl
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: dnsmasq
 Version: 2.73-1
@@ -351,14 +350,14 @@ Architecture: ar71xx
 Conffiles:
  /etc/config/dhcp f81fe9bd228dede2165be71e5c9dcf76cc
  /etc/dnsmasq.conf 1e6ab19c1ae5e70d609ac7b6246541d520
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 
 Package: procd
 Version: 2015-10-29.1-d5fddd91b966424bb63e943e789704d52382cc18
 Depends: libc, ubusd, ubus, libjson-script, ubox, libubox, libubus
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 Auto-Installed: yes
 
 Package: ubusd
@@ -366,44 +365,44 @@ Version: 2015-05-25-f361bfa5fcb2daadf3b160583ce665024f8d108e
 Depends: libc, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
 Package: php7-fastcgi
-Version: 7.0.13-1
+Version: 7.1.1-1
 Depends: libc, php7, php7-cgi
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704390
 
 Package: xxd
 Version: 7.4-2
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150456
+Installed-Time: 1487704398
 
 Package: block-mount
 Version: 2016-01-10-96415afecef35766332067f4205ef3b2c7561d21
 Depends: libc, ubox, libubox, libuci
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 
 Package: kmod-fs-vfat
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nls-base
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nls-base
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 Auto-Installed: yes
 
 Package: kmod-usb2
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-usb-core
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-usb-core
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: firewall
 Version: 2015-07-27
@@ -413,14 +412,14 @@ Architecture: ar71xx
 Conffiles:
  /etc/config/firewall d376906aaf96e4ffcf251b975fd03f8b8d
  /etc/firewall.user bd68324966481011f5e36570258ad97dd4
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 
 Package: kmod-nf-ipt
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: libuci
@@ -428,7 +427,7 @@ Version: 2015-08-27.1-1
 Depends: libc, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
 Package: liblua
@@ -436,7 +435,7 @@ Version: 5.1.5-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 Auto-Installed: yes
 
 Package: libip4tc
@@ -444,7 +443,7 @@ Version: 1.4.21-1
 Depends: libc, libxtables
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 Auto-Installed: yes
 
 Package: tcpdump
@@ -452,14 +451,14 @@ Version: 4.5.1-4
 Depends: libc, libpcap
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704392
 
 Package: kmod-ip6tables
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nf-ipt6, kmod-ipt-core, kmod-ipt-conntrack
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nf-ipt6, kmod-ipt-core, kmod-ipt-conntrack
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: odhcp6c
@@ -467,14 +466,14 @@ Version: 2015-07-29-dc186d6d2b0dd4ad23ca5fc69c00e81f796ff6d9
 Depends: libc, kmod-ipv6
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704385
 
 Package: fstools
 Version: 2016-01-10-96415afecef35766332067f4205ef3b2c7561d21
 Depends: libc, ubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 
 Package: msmtp
 Version: 1.6.2-1
@@ -483,42 +482,42 @@ Status: install user installed
 Architecture: ar71xx
 Conffiles:
  /etc/msmtprc 9441cf220aaea0a364b593128afc4390f4
-Installed-Time: 1484150455
+Installed-Time: 1487704392
 
 Package: kmod-ath9k
-Version: 3.18.29+2016-01-10-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ath9k-common
+Version: 3.18.45+2016-01-10-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ath9k-common
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 
 Package: uci
 Version: 2015-08-27.1-1
 Depends: libc, libuci
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704392
 
 Package: lua
 Version: 5.1.5-1
 Depends: libc, liblua
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: kmod-fs-ext4
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-lib-crc16, kmod-crypto-hash
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-lib-crc16, kmod-crypto-hash
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 
 Package: wpad-mini
 Version: 2015-03-25-1
 Depends: libc, libnl-tiny, hostapd-common, libubus
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704392
 
 Package: dropbear
 Version: 2015.67-1
@@ -529,78 +528,106 @@ Conffiles:
  /etc/dropbear/dropbear_rsa_host_key e3b0c44298fc1c149afbf4c8996fb92427
  /etc/dropbear/dropbear_dss_host_key e3b0c44298fc1c149afbf4c8996fb92427
  /etc/config/dropbear 0198dbc97b5a9aac76a5c6233684571ccd
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 
 Package: php7-mod-json
-Version: 7.0.13-1
+Version: 7.1.1-1
 Depends: libc, php7
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704391
 
 Package: curl
 Version: 7.40.0-3.2
 Depends: libc, libcurl
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 
 Package: kmod-nls-utf8
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nls-base
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nls-base
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: zoneinfo-core
 Version: 2015d-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150456
+Installed-Time: 1487704398
+
+Package: procps-pgrep
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704393
 
 Package: kmod-nls-cp437
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nls-base
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nls-base
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: libstdcpp
 Version: 4.8-linaro-1
 Status: install hold installed
 Essential: yes
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: mtd
 Version: 21
 Depends: libc, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: libltdl
 Version: 2.4-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: kmod-crypto-core
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 Auto-Installed: yes
+
+Package: procps-pmap
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704393
+
+Package: procps-top
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704394
+
+Package: procps-pkill
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704393
 
 Package: libjson-c
 Version: 0.12-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
 Package: libgcc
@@ -608,23 +635,23 @@ Version: 4.8-linaro-1
 Status: install hold installed
 Essential: yes
 Architecture: ar71xx
-Installed-Time: 1484150452
+Installed-Time: 1487704374
 Auto-Installed: yes
+
+Package: libreadline
+Version: 6.3-1
+Depends: libc
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704384
 
 Package: libip6tc
 Version: 1.4.21-1
 Depends: libc, libxtables
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 Auto-Installed: yes
-
-Package: php7-mod-session
-Version: 7.0.13-1
-Depends: libc, php7
-Status: install user installed
-Architecture: ar71xx
-Installed-Time: 1484150455
 
 Package: ppp
 Version: 2.4.7-6
@@ -635,29 +662,29 @@ Conffiles:
  /etc/ppp/chap-secrets 6981fa176a79f8c12be5826c421b16253a
  /etc/ppp/filter 579583b318e0cff706ffc134620b42d3fb
  /etc/ppp/options a0509db666fc831a3f9332ca6e911ba9a3
-Installed-Time: 1484150455
+Installed-Time: 1487704391
 
 Package: libubox
 Version: 2015-11-08-10429bccd0dc5d204635e110a7a8fae7b80d16cb
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
 Package: kmod-gpio-button-hotplug
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: logd
 Version: 2015-11-22-c086167a0154745c677f8730a336ea9cf7d71031
 Depends: libc, libubox, libubus, libblobmsg-json
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704385
 
 Package: librt
 Version: 0.9.33.2-1
@@ -665,29 +692,29 @@ Depends: libpthread
 Status: install hold installed
 Essential: yes
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704384
 
 Package: kmod-mac80211
-Version: 3.18.29+2016-01-10-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-cfg80211, hostapd-common, kmod-crypto-core, kmod-crypto-arc4
+Version: 3.18.45+2016-01-10-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-cfg80211, hostapd-common, kmod-crypto-core, kmod-crypto-arc4
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 Auto-Installed: yes
 
 Package: kmod-dnsresolver
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 
 Package: libjson-script
 Version: 2015-11-08-10429bccd0dc5d204635e110a7a8fae7b80d16cb
 Depends: libc, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 Auto-Installed: yes
 
 Package: libblobmsg-json
@@ -695,7 +722,7 @@ Version: 2015-11-08-10429bccd0dc5d204635e110a7a8fae7b80d16cb
 Depends: libc, libjson-c, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
 Package: iptables
@@ -703,7 +730,7 @@ Version: 1.4.21-1
 Depends: libc, kmod-ipt-core, libip4tc, libip6tc, libxtables
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 Auto-Installed: yes
 
 Package: jshn
@@ -711,7 +738,15 @@ Version: 2015-11-08-10429bccd0dc5d204635e110a7a8fae7b80d16cb
 Depends: libc, libjson-c, libubox, libblobmsg-json
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
+Auto-Installed: yes
+
+Package: procps
+Version: 3.2.8-1
+Depends: libc, libncurses
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704393
 Auto-Installed: yes
 
 Package: libncurses
@@ -719,14 +754,14 @@ Version: 5.9-2
 Depends: libc, terminfo
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704381
 
 Package: kmod-ipt-core
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nf-ipt
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nf-ipt
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: libpcap
@@ -734,14 +769,14 @@ Version: 1.5.3-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704383
 
 Package: kmod-ipv6
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: libpolarssl
@@ -749,55 +784,55 @@ Version: 1.3.14-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 Auto-Installed: yes
 
 Package: kmod-ppp
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-lib-crc-ccitt, kmod-slhc
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-lib-crc-ccitt, kmod-slhc
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: libubus
 Version: 2015-05-25-f361bfa5fcb2daadf3b160583ce665024f8d108e
 Depends: libc, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
 Package: kmod-nf-conntrack
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: php7
-Version: 7.0.13-1
+Version: 7.1.1-1
 Depends: libc, libpcre, zlib
 Status: install user installed
 Architecture: ar71xx
 Conffiles:
  /etc/php.ini 914d657ec5741c61b9dcb4fa626692d8ce
-Installed-Time: 1484150455
+Installed-Time: 1487704386
 Auto-Installed: yes
 
 Package: kmod-fs-nfs
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-fs-nfs-common, kmod-dnsresolver
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-fs-nfs-common, kmod-dnsresolver
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 
 Package: usign
 Version: 2015-05-08-cf8dcdb8a4e874c77f3e9a8e9b643e8c17b19131
 Depends: libc, libubox
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 Auto-Installed: yes
 
 Package: libxtables
@@ -805,7 +840,7 @@ Version: 1.4.21-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704376
 Auto-Installed: yes
 
 Package: ip6tables
@@ -813,29 +848,36 @@ Version: 1.4.21-1
 Depends: libc, kmod-ip6tables, iptables
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 
 Package: zlib
 Version: 1.2.8-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704381
 Auto-Installed: yes
+
+Package: procps-slabtop
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704394
 
 Package: htop
 Version: 1.0.3-1
 Depends: libc, libncurses
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704392
 
 Package: kmod-nf-ipt6
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nf-ipt, kmod-nf-conntrack6
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nf-ipt, kmod-nf-conntrack6
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: ath10k-firmware-qca988x
@@ -843,45 +885,66 @@ Version: 2014-11-13-77f72b5f7dd940386d9e619a17904987759b7186-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 
 Package: kmod-nls-iso8859-1
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-nls-base
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-nls-base
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
-Package: kmod-nf-conntrack6
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ipv6, kmod-nf-conntrack
-Status: install hold installed
-Architecture: ar71xx
-Installed-Time: 1484150453
-Auto-Installed: yes
-
-Package: kmod-ath
-Version: 3.18.29+2016-01-10-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-mac80211
+Package: bc
+Version: 1.06.95-1
+Depends: libc, libreadline, libncurses
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704392
+
+Package: kmod-nf-conntrack6
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ipv6, kmod-nf-conntrack
+Status: install hold installed
+Architecture: ar71xx
+Installed-Time: 1487704377
 Auto-Installed: yes
+
+Package: procps-watch
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704394
+
+Package: kmod-ath
+Version: 3.18.45+2016-01-10-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-mac80211
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704378
+Auto-Installed: yes
+
+Package: procps-snice
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704394
 
 Package: ubox
 Version: 2015-11-22-c086167a0154745c677f8730a336ea9cf7d71031
 Depends: libc, libubox, ubusd, ubus, libubus, libuci
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 Auto-Installed: yes
 
 Package: kernel
-Version: 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f
+Version: 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3
 Depends: libc
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 
 Package: libnl-tiny
@@ -889,22 +952,36 @@ Version: 0.1-4
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704374
 Auto-Installed: yes
 
+Package: procps-skill
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704394
+
+Package: procps-ps
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704393
+
 Package: kmod-fs-nfs-common
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 
 Package: kmod-nls-base
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704379
 Auto-Installed: yes
 
 Package: jsonfilter
@@ -912,7 +989,7 @@ Version: 2014-06-19-cdc760c58077f44fc40adbbe41e1556a67c1b9a9
 Depends: libc, libubox, libjson-c
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704375
 Auto-Installed: yes
 
 Package: hostapd-common
@@ -920,28 +997,28 @@ Version: 2015-03-25-1
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 
 Package: torchws
 Version: 1
 Depends: libc, libwebsockets
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704392
 
 Package: kmod-ath9k-common
-Version: 3.18.29+2016-01-10-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ath
+Version: 3.18.45+2016-01-10-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ath
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704379
 
 Package: kmod-crypto-arc4
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-crypto-core
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-crypto-core
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 Auto-Installed: yes
 
 Package: libopenssl
@@ -949,58 +1026,65 @@ Version: 1.0.2h-1
 Depends: libc, zlib
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704383
 
 Package: kmod-scsi-core
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 
 Package: kmod-slhc
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-lib-crc-ccitt
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-lib-crc-ccitt
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150454
+Installed-Time: 1487704380
 Auto-Installed: yes
 
 Package: nginx
 Version: 1.4.7-2
-Depends: libc, libpcre, libopenssl, zlib, libpthread
+Depends: libc, libpcre, libopenssl, zlib, libpthread, liblua
 Status: install user installed
 Architecture: ar71xx
 Conffiles:
- /etc/nginx/nginx.conf 9ff230ed6b8dcdb2089d01d43a8be74c69
- /etc/nginx/fastcgi_params d10cc52110a39f473e1dcfbdd37e915282
  /etc/nginx/koi-utf b5f8a6d411db5e5d11d151d50cd1e96244
- /etc/nginx/mime.types 3a6bc4bc1cd63bda283dc45a3f193a56c0
- /etc/nginx/win-utf 55adf050bad0cb60cbfe18649f8f17cd40
  /etc/nginx/koi-win de518a9eafe86c8bc705e296d0ef261358
-Installed-Time: 1484150455
+ /etc/nginx/win-utf 55adf050bad0cb60cbfe18649f8f17cd40
+ /etc/nginx/mime.types 3a6bc4bc1cd63bda283dc45a3f193a56c0
+ /etc/nginx/fastcgi_params d10cc52110a39f473e1dcfbdd37e915282
+ /etc/nginx/nginx.conf 9ff230ed6b8dcdb2089d01d43a8be74c69
+Installed-Time: 1487704393
 Auto-Installed: yes
 
 Package: kmod-cfg80211
-Version: 3.18.29+2016-01-10-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), iw
+Version: 3.18.45+2016-01-10-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), iw
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704378
 Auto-Installed: yes
+
+Package: procps-free
+Version: 3.2.8-1
+Depends: libc, procps
+Status: install user installed
+Architecture: ar71xx
+Installed-Time: 1487704393
 
 Package: ppp-mod-pppoe
 Version: 2.4.7-6
 Depends: libc, kmod-pppoe
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1484150455
+Installed-Time: 1487704391
 
 Package: kmod-ipt-nat
-Version: 3.18.29-1
-Depends: kernel (= 3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f), kmod-ipt-core, kmod-nf-nat
+Version: 3.18.45-1
+Depends: kernel (= 3.18.45-1-d4b049c118026fca4d21290e6a45e8b3), kmod-ipt-core, kmod-nf-nat
 Status: install hold installed
 Architecture: ar71xx
-Installed-Time: 1484150453
+Installed-Time: 1487704377
 Auto-Installed: yes
 

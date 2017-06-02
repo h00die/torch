@@ -6,5 +6,5 @@ License: GPL-2.0 GPL-2.0+
 LicenseFiles: Licenses/README
 Section: utils
 Architecture: ar71xx
-Installed-Size: 10323
+Installed-Size: 10330
 Description:  This package includes tools to read and modify U-Boot bootloader environment.

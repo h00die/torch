@@ -1,8 +1,0 @@
-Package: torchcrypt
-Version: 1
-Depends: libc, libmcrypt, libopenssl
-Source: package/torchcrypt
-Section: utils
-Architecture: ar71xx
-Installed-Size: 2390
-Description:  Torch Crypt Hash

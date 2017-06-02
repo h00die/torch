@@ -5,5 +5,5 @@ Source: package/firmware/ath10k-firmware
 Section: kernel
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 217769
+Installed-Size: 218025
 Description:  ath10k firmware for QCA988x devices

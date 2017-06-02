@@ -5,11 +5,11 @@
 /usr/share/squid/icons/silk/folder.png
 /usr/share/squid/errors/templates/ERR_FTP_UNAVAILABLE
 /usr/share/squid/errors/templates/ERR_CONFLICT_HOST
-/usr/share/squid/icons/silk/image.png
 /usr/share/squid/errors/templates/ERR_FTP_FAILURE
+/usr/share/squid/icons/silk/image.png
 /usr/share/squid/errors/templates/ERR_FTP_NOT_FOUND
-/usr/share/squid/icons/silk/page_world.png
 /usr/share/squid/errors/templates/ERR_CACHE_MGR_ACCESS_DENIED
+/usr/share/squid/icons/silk/page_world.png
 /usr/share/squid/errors/templates/ERR_FTP_FORBIDDEN
 /usr/share/squid/icons/silk/compress.png
 /usr/share/squid/errors/templates/ERR_ICAP_FAILURE
@@ -63,11 +63,11 @@
 /usr/share/squid/icons/silk/page_white_powerpoint.png
 /usr/share/squid/errors/templates/ERR_TOO_BIG
 /etc/squid/mime.conf
-/etc/init.d/squid
 /usr/share/squid/icons/silk/information.png
+/etc/init.d/squid
 /usr/share/squid/icons/silk/cd.png
-/usr/share/squid/icons/silk/page_excel.png
 /usr/share/squid/errors/templates/ERR_FORWARDING_DENIED
+/usr/share/squid/icons/silk/page_excel.png
 /usr/share/squid/icons/silk/cup.png
 /usr/share/squid/icons/silk/photo.png
 /usr/share/squid/icons/silk/package.png

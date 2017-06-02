@@ -4,6 +4,6 @@ Depends: libc, zlib, libopenssl
 Source: package/libwesockets
 Section: libs
 Architecture: ar71xx
-Installed-Size: 29677
+Installed-Size: 29682
 Description:  libwebsockets
  This package contains libwebsocket libraries

@@ -6,5 +6,5 @@ License: MIT
 LicenseFiles: README
 Section: libs
 Architecture: ar71xx
-Installed-Size: 118253
+Installed-Size: 118380
 Description:  Terminal handling library

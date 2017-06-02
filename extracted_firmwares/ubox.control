@@ -6,5 +6,5 @@ License: GPL-2.0
 Section: base
 Maintainer: John Crispin <blogic@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 13171
+Installed-Size: 13118
 Description:  OpenWrt system helper toolbox

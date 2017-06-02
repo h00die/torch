@@ -6,5 +6,5 @@ License: ISC
 Section: base
 Maintainer: Jo-Philipp Wich <jow@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 6880
+Installed-Size: 6879
 Description:  OpenWrt JSON filter utility

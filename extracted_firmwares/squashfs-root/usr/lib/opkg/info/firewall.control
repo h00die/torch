@@ -6,5 +6,5 @@ License: ISC
 Section: net
 Maintainer: Jo-Philipp Wich <jow@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 34875
+Installed-Size: 34863
 Description:  This package provides a config-compatible C implementation of the UCI firewall.

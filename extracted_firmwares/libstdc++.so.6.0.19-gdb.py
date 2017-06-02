@@ -19,8 +19,8 @@ import gdb
 import os
 import os.path
 
-pythondir = '/home/sky/programms/tmp/torch_firmware/build/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/share/gcc-4.8.3/python'
-libdir = '/home/sky/programms/tmp/torch_firmware/build/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/mips-openwrt-linux-uclibc/lib'
+pythondir = '/home/sky/proggrams/tmp/torch_firmware/build/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/share/gcc-4.8.3/python'
+libdir = '/home/sky/proggrams/tmp/torch_firmware/build/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/mips-openwrt-linux-uclibc/lib'
 
 # This file might be loaded when there is no current objfile.  This
 # can happen if the user loads it manually.  In this case we don't

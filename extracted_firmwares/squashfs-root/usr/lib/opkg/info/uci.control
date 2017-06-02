@@ -6,5 +6,5 @@ License: LGPL-2.1
 Section: base
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 6602
+Installed-Size: 6679
 Description:  Utility for the Unified Configuration Interface (UCI)

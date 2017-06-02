@@ -7,7 +7,7 @@ LicenseFiles: COPYING
 Section: admin
 Maintainer: Etienne CHAMPETIER <champetier.etienne@gmail.com>
 Architecture: ar71xx
-Installed-Size: 44019
+Installed-Size: 44018
 Description:  Htop is an ncursed-based process viewer similar to top, but
  it allows to scroll the list vertically and horizontally to
  see all processes and their full command lines.

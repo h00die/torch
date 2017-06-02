@@ -5,5 +5,5 @@ Source: package/base-files
 License: GPL-2.0
 Section: base
 Architecture: ar71xx
-Installed-Size: 51228
+Installed-Size: 51237
 Description:  This package contains a base filesystem and system scripts for OpenWrt.

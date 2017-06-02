@@ -6,6 +6,6 @@ License: ISC
 Section: utils
 Maintainer: Jo-Philipp Wich <jow@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 15658
+Installed-Size: 15662
 Description:  This package provides the UBUS RPC backend server to expose various
  functionality to frontend programs via JSON-RPC.

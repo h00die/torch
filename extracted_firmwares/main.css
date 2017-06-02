@@ -1,0 +1,95 @@
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Lato", serif;
+    background-color: lightslategray;
+
+}
+
+
+.wrapper {
+    margin: 0 auto;
+    width: 740px;
+}
+
+.wrapper .content {
+    text-align: center;
+    font-size: 24px;
+}
+
+.header {
+    padding-top: 100px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+.container {
+
+    text-align: center;
+
+}
+.container h2{
+    font-size: 48px;
+    color: #EF6D2F;
+}
+
+.container p{
+    color:#ffffff;
+}
+
+.content {
+
+    text-align: center;
+
+
+}
+.content h2{
+    font-size: 48px;
+    color: #EF6D2F;
+}
+.label {
+    font-size: 20px;
+    color: #EF6D2F;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.input {
+    display: inline-block;
+    border: 1px solid #A09D9B;
+    height: 34px;
+    padding: 6px 12px;
+    outline: 0;
+    margin-bottom: 20px;
+}
+
+.input:focus {
+    border-color: #f7a063;
+    box-shadow: 0 0 4px #f7a063;
+}
+
+.submit {
+    border: 1px solid #EF6D2F;
+    background-color: #EF6D2F;
+    color: #FFF;
+    text-transform: uppercase;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 6px 12px;
+    text-transform: uppercase;
+    font-family: "Lato", serif;
+}
+
+.logo {
+    width: 251px;
+
+}

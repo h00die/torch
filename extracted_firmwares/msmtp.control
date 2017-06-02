@@ -7,7 +7,7 @@ LicenseFiles: COPYING
 Section: mail
 Maintainer: Nicolas Thill <nico@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 36841
+Installed-Size: 36797
 Description:  msmtp is an SMTP client. In the default mode, it transmits a mail to
  an SMTP server (for example at a free mail provider) which does the
  delivery. To use this program with your mail user agent (MUA), create

@@ -5,6 +5,6 @@ Source: feeds/packages/utils/vim
 Section: utils
 Maintainer: Marko Ratkaj <marko.ratkaj@sartura.hr>
 Architecture: ar71xx
-Installed-Size: 5696
+Installed-Size: 5701
 Description:  xxd creates a hex dump of a given file or standard input, it can also convert
  a hex dump back to its original binary form.

@@ -13,6 +13,7 @@ XHEADERMAC=$(grep "wan_mac" $CFGDOMAINS | cut -d= -f2)
 #XHEADERMAC=$(ifconfig eth0 | awk '/HWaddr/ { print $5 }')
 TIMESTAMP="date +%s"
 TORCHCRYPT="/bin/torchcrypt"
+HOSTSFILE="/etc/hosts"
 
 echo [`$TIMESTAMP`" --->] Request TorchRouter new global configuration ..." >> $LOGFILE
 
@@ -38,8 +39,9 @@ if [ "$status" == "ok" ]; then
 	#     exit 1
 	# fi
 	json_select ..
+	json_get_var safeSearch safeSearch
 	json_select technical
-    	#json_get_var unmonitoredSsid unmonitoredSSid
+   	#json_get_var unmonitoredSsid unmonitoredSSid
     	json_get_var monitoredSsid monitoredSSid
     	#json_get_var unmonitoredPassword unmonitoredPassword
     	json_get_var monitoredPassword monitoredPassword
@@ -53,56 +55,74 @@ if [ "$status" == "ok" ]; then
 	MONIT_PASS=$(echo "$monitoredPassword" | rev | xxd -r -p)
 	# and check if result is OK
 	if [ $? -eq 0 ]; then
-	    echo [`$TIMESTAMP`"] SUCCESS decrypt hash wifi ... !" >> $LOGFILE
-	    echo [`$TIMESTAMP`"] $MONIT_PASS / $UNMONIT_PASS " >> $LOGFILE
-	    # invers netwrok for lan unmonitored
-	    # same wifi for both interface 
-	    # uci set wireless.@wifi-iface[0].ssid="$monitoredSsid"
-	    # uci set wireless.@wifi-iface[0].encryption='psk2'
-	    # uci set wireless.@wifi-iface[0].key="$MONIT_PASS"
+		echo [`$TIMESTAMP`"] SUCCESS decrypt hash wifi ... !" >> $LOGFILE
+		echo [`$TIMESTAMP`"] $MONIT_PASS / $UNMONIT_PASS " >> $LOGFILE
+		# invers netwrok for lan unmonitored
+		# same wifi for both interface 
+		# uci set wireless.@wifi-iface[0].ssid="$monitoredSsid"
+		# uci set wireless.@wifi-iface[0].encryption='psk2'
+		# uci set wireless.@wifi-iface[0].key="$MONIT_PASS"
 
-	    # uci set wireless.@wifi-iface[1].ssid="$monitoredSsid"
-	    # uci set wireless.@wifi-iface[1].encryption='psk2'
-	    # uci set wireless.@wifi-iface[1].key="$MONIT_PASS"
-       
-        uci set wireless.@wifi-iface[0].ssid="$monitoredSsid"
-        if [ -z "$MONIT_PASS" ]; then
-            uci set wireless.@wifi-iface[0].encryption='none'
-        else
-            uci set wireless.@wifi-iface[0].encryption='psk2'
-        fi
-        uci set wireless.@wifi-iface[0].key="$MONIT_PASS"
+		# uci set wireless.@wifi-iface[1].ssid="$monitoredSsid"
+		# uci set wireless.@wifi-iface[1].encryption='psk2'
+		# uci set wireless.@wifi-iface[1].key="$MONIT_PASS"
 
-        uci set wireless.@wifi-iface[1].ssid="$monitoredSsid"
-        if [ -z "$MONIT_PASS" ]; then
-           uci set wireless.@wifi-iface[1].encryption='none'
-        else
-           uci set wireless.@wifi-iface[1].encryption='psk2'
-        fi
-        uci set wireless.@wifi-iface[1].key="$MONIT_PASS"
+		uci set wireless.@wifi-iface[0].ssid="$monitoredSsid"
+		if [ -z "$MONIT_PASS" ]; then
+			uci set wireless.@wifi-iface[0].encryption='none'
+		else
+			uci set wireless.@wifi-iface[0].encryption='psk2'
+		fi
+		uci set wireless.@wifi-iface[0].key="$MONIT_PASS"
 
-	    uci commit wireless
-	    #/etc/init.d/network restart
-	    echo [`$TIMESTAMP`"] set wifi network to $ssid ..." >> $LOGFILE
-	    # set timezone
+		uci set wireless.@wifi-iface[1].ssid="$monitoredSsid"
+		if [ -z "$MONIT_PASS" ]; then
+			uci set wireless.@wifi-iface[1].encryption='none'
+		else
+			uci set wireless.@wifi-iface[1].encryption='psk2'
+		fi
+		uci set wireless.@wifi-iface[1].key="$MONIT_PASS"
+
+		uci commit wireless
+		#/etc/init.d/network restart
+		echo [`$TIMESTAMP`"] set wifi network to $ssid ..." >> $LOGFILE
+		# set timezone
 		if [ "$timezone" == "US/Pacific" ]; then
-		    uci set system.@system[0].zonename="America/Los Angeles"
-		    uci set system.@system[0].timezone="PST8PDT,M3.2.0,M11.1.0"
+			uci set system.@system[0].zonename="America/Los Angeles"
+			uci set system.@system[0].timezone="PST8PDT,M3.2.0,M11.1.0"
 		elif [ "$timezone" == "US/Mountain" ]; then
-		    uci set system.@system[0].zonename="America/Denver"
-		    uci set system.@system[0].timezone="MST7MDT,M3.2.0,M11.1.0"
+			uci set system.@system[0].zonename="America/Denver"
+			uci set system.@system[0].timezone="MST7MDT,M3.2.0,M11.1.0"
 		elif [ "$timezone" == "US/Central" ]; then
-		    uci set system.@system[0].zonename="America/Chicago"
-		    uci set system.@system[0].timezone="CST6CDT,M3.2.0,M11.1.0"
+			uci set system.@system[0].zonename="America/Chicago"
+			uci set system.@system[0].timezone="CST6CDT,M3.2.0,M11.1.0"
 		elif [ "$timezone" == "US/Eastern" ]; then
-		    uci set system.@system[0].zonename="America/New York"
-		    uci set system.@system[0].timezone="EST5EDT,M3.2.0,M11.1.0"
+			uci set system.@system[0].zonename="America/New York"
+			uci set system.@system[0].timezone="EST5EDT,M3.2.0,M11.1.0"
 		fi
 		uci commit system
-	    echo [`$TIMESTAMP`"] timezone set to $timezone ..." >> $LOGFILE
-	    sed -i "s/config=.*/config=`$TIMESTAMP`/g" $UPDATEFILE
-	    # and then restart !
-	    reboot -f -d 10 &
+
+		# set network name 
+		uci set system.@system[0].hostname="TORCH"
+
+		if [ ! -z "$safeSearch" ]; then 
+			# rewrite host file for dnsmasq 
+			echo "127.0.0.1 localhost" > $HOSTSFILE
+
+			if 	[ "$safeSearch" == "1" ]; then
+				echo [`$TIMESTAMP`"] SafeSearch enabled." >> $LOGFILE
+				# resolve safeSearch CNAME
+				echo "216.239.38.120 forcesafesearch.google.com" >> $HOSTSFILE	
+				echo "204.79.197.220 strict.bing.com" >> $HOSTSFILE
+			else
+				echo [`$TIMESTAMP`"] SafeSearch disabled." >> $LOGFILE
+			fi
+		fi
+
+		echo [`$TIMESTAMP`"] timezone set to $timezone ..." >> $LOGFILE
+		sed -i "s/config=.*/config=`$TIMESTAMP`/g" $UPDATEFILE
+		# and then restart !
+		reboot -f -d 10 &
 
 	else
 	    echo [`$TIMESTAMP`"] FAILED to decrypt hash wifi ... !" >> $LOGFILE

@@ -1,8 +1,0 @@
-/lib/modules/3.18.29/mtd_nandecctest.ko
-/lib/modules/3.18.29/mtd_oobtest.ko
-/lib/modules/3.18.29/mtd_stresstest.ko
-/lib/modules/3.18.29/mtd_speedtest.ko
-/lib/modules/3.18.29/mtd_subpagetest.ko
-/lib/modules/3.18.29/mtd_pagetest.ko
-/lib/modules/3.18.29/mtd_readtest.ko
-/lib/modules/3.18.29/mtd_torturetest.ko

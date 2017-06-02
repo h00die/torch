@@ -1,10 +1,10 @@
 Package: kmod-scsi-core
-Version: 3.18.29-1
-Depends: kernel (=3.18.29-1-3b167a4808d5ad7d4740956c167d9e4f)
+Version: 3.18.45-1
+Depends: kernel (=3.18.45-1-d4b049c118026fca4d21290e6a45e8b3)
 Source: package/kernel/linux
 License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 77309
+Installed-Size: 77456
 Description:  SCSI device support

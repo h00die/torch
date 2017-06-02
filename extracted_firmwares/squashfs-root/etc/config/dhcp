@@ -35,11 +35,1460 @@ config odhcpd 'odhcpd'
 	option leasefile '/tmp/hosts/odhcpd'
 	option leasetrigger '/usr/sbin/odhcpd-update'
 
-#config dhcp 'wan2'
-#	option interface 'wan2'
-#	option leasetime '12h'
-#	option start '10'
-#	option limit '200'
+config cname
+        option cname 'www.google.com'
+        option target 'forcesafesearch.google.com'
 
+config cname
+        option cname 'google.com'
+        option target 'forcesafesearch.google.com'
 
+config cname
+        option cname 'www.youtube.com'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'm.youtube.com'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'www.youtube-nocookie.com'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'youtubei.googleapis.com'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'youtube.googleapis.com'
+        option target 'forcesafesearch.google.com'
+
+######
+# .a
+######
+config cname
+        option cname 'google.com.ad'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ad'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ae'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ae'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.af'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.af'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ag'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ag'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ai'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ai'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.al'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.al'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.am'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.am'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.ao'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.ao'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ar'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ar'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.as'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.as'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.at'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.at'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.au'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.au'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.az'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.az'
+        option target 'forcesafesearch.google.com'
+
+######
+# .b
+######
+config cname
+        option cname 'google.ba'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ba'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.bd'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.bd'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.be'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.be'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bf'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bf'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.bh'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.bh'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bi'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bi'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bj'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bj'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.bo'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.bo'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.br'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.br'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bs'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bs'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bt'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bt'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.bw'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.bw'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.by'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.by'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.bz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.bz'
+        option target 'forcesafesearch.google.com'
+
+######
+# .c
+######
+config cname
+        option cname 'google.ca'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ca'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cat'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cat'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cd'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cd'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cf'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cf'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ch'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ch'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ci'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ci'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.ck'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.ck'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cl'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cl'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.co'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.co'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.cr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.cr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.cu'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.cu'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cv'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cv'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.cy'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.cy'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.cz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.cz'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .d
+#######
+config cname
+        option cname 'google.de'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.de'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.dj'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.dj'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.dk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.dk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.dm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.dm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.do'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.do'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.dz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.dz'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .e
+#######
+config cname
+        option cname 'google.com.ec'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ec'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ee'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ee'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.eg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.eg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.es'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.es'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.et'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.et'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .f
+#######
+config cname
+        option cname 'google.fi'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.fi'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.fj'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.fj'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.fm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.fm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.fr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.fr'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .g
+#######
+config cname
+        option cname 'google.ga'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ga'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ge'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ge'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.gg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.gg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.gh'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.gh'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.gi'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.gi'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.gl'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.gl'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.gm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.gm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.gp'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.gp'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.gr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.gr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.gt'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.gt'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.gy'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.gy'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .h
+#######
+config cname
+        option cname 'google.com.hk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.hk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.hn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.hn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.hr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.hr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ht'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ht'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.hu'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.hu'
+        option target 'forcesafesearch.google.com'
+
+########
+# .i
+#######
+config cname
+        option cname 'google.co.id'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.id'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ie'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ie'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.il'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.il'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.im'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.im'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.in'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.in'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.iq'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.iq'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.is'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.is'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.it'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.it'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .j
+#######
+config cname
+        option cname 'google.je'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.je'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.jm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.jm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.jo'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.jo'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.jp'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.jp'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .k
+#######
+config cname
+        option cname 'google.co.ke'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.ke'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.kh'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.kh'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ki'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ki'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.kg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.kg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.kr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.kr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.kw'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.kw'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.kz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.kz'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .l
+#######
+config cname
+        option cname 'google.la'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.la'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.lb'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.lb'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.li'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.li'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.lk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.lk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.ls'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.ls'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.lt'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.lt'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.lu'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.lu'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.lv'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.lv'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ly'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ly'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .m
+#######
+config cname
+        option cname 'google.co.ma'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.ma'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.md'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.md'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.me'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.me'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.mg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.mg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.mk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.mk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ml'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ml'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.mm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.mm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.mn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.mn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ms'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ms'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.mt'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.mt'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.mu'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.mu'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.mv'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.mv'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.mw'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.mw'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.mx'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.mx'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.my'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.my'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.mz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.mz'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .n
+#######
+config cname
+        option cname 'google.com.na'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.na'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.nf'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.nf'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ng'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ng'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ni'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ni'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ne'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ne'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.nl'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.nl'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.no'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.no'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.com.np'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.com.np'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.nr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.nr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.nu'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.nu'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.nz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.nz'
+        option target 'forcesafesearch.google.com'
+
+########
+# .o
+########
+config cname
+        option cname 'google.com.om'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.om'
+        option target 'forcesafesearch.google.com'
+
+########
+# .p
+########
+config cname
+        option cname 'google.com.pa'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.pa'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.pe'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.pe'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.pg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.pg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.ph'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ph'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.pk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.pk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.pl'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.pl'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.pn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.pn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.pr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.pr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ps'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ps'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.pt'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.pt'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.py'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.py'
+        option target 'forcesafesearch.google.com'
+
+########
+# .q
+########
+config cname
+        option cname 'google.com.qa'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.qa'
+        option target 'forcesafesearch.google.com'
+
+########
+# .r
+########
+config cname
+        option cname 'google.ro'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ro'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.ru'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ru'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.rw'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.rw'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .s
+#######
+config cname
+        option cname 'google.com.sa'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sa'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.sb'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sb'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.sc'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.sc'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.se'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.se'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.sg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.sh'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sh'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.si'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.si'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.sk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.sk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.sl'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sl'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.sn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.so'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.so'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.sm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.sr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.sr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.st'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.st'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.sv'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.sv'
+        option target 'forcesafesearch.google.com'
+
+########
+# .t
+########
+config cname
+        option cname 'google.td'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.td'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.tg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.tg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.th'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.th'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.tj'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.tj'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.tk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.tk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.tl'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.tl'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.tm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.tm'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.tn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.tn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.to'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.to'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.tr'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.tr'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.tt'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.tt'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.tw'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.tw'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.tz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.tz'
+        option target 'forcesafesearch.google.com'
+
+#######
+# .u
+#######
+config cname
+        option cname 'google.com.ua'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.ua'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.ug'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.ug'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.uk'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.uk'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.uy'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.uy'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.uz'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.uz'
+        option target 'forcesafesearch.google.com'
+
+########
+# .v
+########
+config cname
+        option cname 'google.com.vc'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.vc'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.ve'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.ve'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.vg'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.vg'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.co.vi'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.vi'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.com.vn'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.com.vn'
+        option target 'forcesafesearch.google.com'
+
+config cname
+        option cname 'google.vu'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.vu'
+        option target 'forcesafesearch.google.com'
+
+########
+# .w
+########
+config cname
+        option cname 'google.ws'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.ws'
+        option target 'forcesafesearch.google.com'
+
+########
+# .r
+########
+config cname
+        option cname 'google.rs'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.rs'
+        option target 'forcesafesearch.google.com'
+
+########
+# .z
+########
+config cname 
+        option cname 'google.co.za'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.za'
+        option target 'forcesafesearch.google.com'
+
+config cname 
+        option cname 'google.co.zm'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.zm'
+        option target 'forcesafesearch.google.com'
+
+config cname 
+        option cname 'google.co.zw'
+        option target 'forcesafesearch.google.com'
+config cname
+        option cname 'www.google.co.zw'
+        option target 'forcesafesearch.google.com'
+
+#########
+# Bing
+#########
+config cname
+        option cname 'bing.com'
+        option target 'strict.bing.com'
+config cname
+        option cname 'www.bing.com'
+        option target 'strict.bing.com'
 

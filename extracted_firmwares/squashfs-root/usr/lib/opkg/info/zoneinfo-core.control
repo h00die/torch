@@ -6,5 +6,5 @@ License: Public Domain
 Section: utils
 Maintainer: Vladimir Ulrich <admin@evl.su>
 Architecture: ar71xx
-Installed-Size: 22305
+Installed-Size: 20977
 Description:  Zone Information (core)
